@@ -94,6 +94,9 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ]);
+            $browse->addChild('Links', [
+                'route' => 'link_index',
+            ]);
         }
 
         return $menu;

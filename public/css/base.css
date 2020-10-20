@@ -42,6 +42,11 @@ body > .container {
     padding-top: 70px;
 }
 
+.collection {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 /* Drow down menu */
 a.dropdown-toggle::after {
     content: "▾";
