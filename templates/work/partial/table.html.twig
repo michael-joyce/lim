@@ -1,8 +1,8 @@
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Citation</th>
+            <th>Title</th>
+            <th>Full Citation</th>
         </tr>
     </thead>
     <tbody>
@@ -10,7 +10,7 @@
             <tr>
                 <td>
                     <a href="{{ path('work_show', { 'id': work.id }) }}">
-                        {{ work.id }}
+                        {{ work.title|raw }}
                     </a>
                 </td>
                 <td>
