@@ -26,12 +26,12 @@ class WorkType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $work = $options['work'];
-        $builder->add('title', TextareaType::class, [
+        $builder->add('title', TextType::class, [
             'label' => 'Title',
             'required' => true,
             'attr' => [
                 'help_block' => '',
-                'class' => 'tinymce',
+                'class' => '',
             ],
         ]);
         $builder->add('citation', TextareaType::class, [

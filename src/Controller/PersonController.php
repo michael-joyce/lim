@@ -13,6 +13,8 @@ namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
+use App\Service\LinkManager;
+use App\Service\ReferenceManager;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -94,14 +96,17 @@ class PersonController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
         $person = new Person();
-        $form = $this->createForm(PersonType::class, $person);
+        $form = $this->createForm(PersonType::class, $person, ['person' => $person]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($person);
+            $entityManager->flush();
+            $linkManager->setLinks($person, $form->get('links')->getData());
+            $referenceManager->setReferences($person, $form->get('references')->getData());
             $entityManager->flush();
             $this->addFlash('success', 'The new person has been saved.');
 
@@ -145,11 +150,13 @@ class PersonController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Person $person) {
-        $form = $this->createForm(PersonType::class, $person);
+    public function edit(Request $request, Person $person, LinkManager $linkManager, ReferenceManager $referenceManager) {
+        $form = $this->createForm(PersonType::class, $person, ['person' => $person]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($person, $form->get('links')->getData());
+            $referenceManager->setReferences($person, $form->get('references')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated person has been saved.');
 

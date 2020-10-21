@@ -86,6 +86,22 @@
             </td>
         </tr>
         <tr>
+            <th>Links</th>
+            <td>
+                {% for link in person.links %}
+                    {{ link|raw }} <br />
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>References</th>
+            <td>
+                {% for reference in person.references %}
+                    {{ reference.work.citation|raw }}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>Created</th>
             <td>{{ person.created|date }}</td>
         </tr>

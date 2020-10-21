@@ -15,7 +15,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Person find($id, $lockMode = null, $lockVersion = null)
@@ -34,7 +33,8 @@ class PersonRepository extends ServiceEntityRepository {
     public function indexQuery() {
         return $this->createQueryBuilder('person')
             ->orderBy('person.sortableName')
-            ->getQuery();
+            ->getQuery()
+        ;
     }
 
     /**

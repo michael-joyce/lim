@@ -19,8 +19,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(indexes={
-     @ORM\Index(name="person_full_idx", columns={"full_name"}, flags={"fulltext"}),
-     @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ * @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
  * })
  */
 class Person extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
@@ -65,13 +64,13 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
      */
     private $birthYear;
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
      */
     private $deathYear;
 
@@ -159,7 +158,7 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     }
 
     public function setBirthYear($birthYear) : self {
-        if(is_string($birthYear) || is_numeric($birthYear)) {
+        if (is_string($birthYear) || is_numeric($birthYear)) {
             $this->birthYear = CircaDate::build($birthYear);
         } else {
             $this->birthYear = $birthYear;
@@ -173,7 +172,7 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     }
 
     public function setDeathYear($deathYear) : self {
-        if(is_string($deathYear) || is_numeric($deathYear)) {
+        if (is_string($deathYear) || is_numeric($deathYear)) {
             $this->deathYear = CircaDate::build($deathYear);
         } else {
             $this->deathYear = $deathYear;
