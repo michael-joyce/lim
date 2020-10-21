@@ -13,6 +13,14 @@
             </td>
         </tr>
         <tr>
+            <th>Links</th>
+            <td>
+                {% for link in work.links %}
+                    {{ link|raw }} <br />
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>Summary</th>
             <td>
                 {{ work.summary|raw }}

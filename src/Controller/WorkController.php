@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\Work;
 use App\Form\WorkType;
 use App\Repository\WorkRepository;
+use App\Service\LinkManager;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -94,14 +95,16 @@ class WorkController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request) {
+    public function new(Request $request, LinkManager $linkManager) {
         $work = new Work();
-        $form = $this->createForm(WorkType::class, $work);
+        $form = $this->createForm(WorkType::class, $work, ['work' => $work]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($work);
+            $entityManager->flush();
+            $linkManager->setLinks($work, $form->get('links')->getData());
             $entityManager->flush();
             $this->addFlash('success', 'The new work has been saved.');
 
@@ -145,11 +148,12 @@ class WorkController extends AbstractController implements PaginatorAwareInterfa
      *
      * @return array|RedirectResponse
      */
-    public function edit(Request $request, Work $work) {
-        $form = $this->createForm(WorkType::class, $work);
+    public function edit(Request $request, Work $work, LinkManager $linkManager) {
+        $form = $this->createForm(WorkType::class, $work, ['work' => $work]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkManager->setLinks($work, $form->get('links')->getData());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'The updated work has been saved.');
 

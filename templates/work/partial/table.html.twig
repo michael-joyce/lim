@@ -2,11 +2,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Title</th>
             <th>Citation</th>
-            <th>Summary</th>
-            <th>Location</th>
-
         </tr>
     </thead>
     <tbody>
@@ -18,21 +14,8 @@
                     </a>
                 </td>
                 <td>
-                    {{ work.title|raw }}
-                </td>
-
-                <td>
                     {{ work.citation|raw }}
                 </td>
-
-                <td>
-                    {{ work.summary|raw }}
-                </td>
-
-                <td>
-                    {{ work.location|raw }}
-                </td>
-
             </tr>
         {% endfor %}
     </tbody>

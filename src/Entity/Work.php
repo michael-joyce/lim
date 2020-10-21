@@ -44,7 +44,7 @@ class Work extends AbstractEntity implements LinkableInterface {
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $location;
 

@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Location;
 use App\Entity\Work;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,6 +26,7 @@ class WorkType extends AbstractType {
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
+        $work = $options['work'];
         $builder->add('title', TextareaType::class, [
             'label' => 'Title',
             'required' => true,
@@ -40,6 +43,24 @@ class WorkType extends AbstractType {
                 'class' => 'tinymce',
             ],
         ]);
+        $builder->add('links', CollectionType::class, [
+            'label' => 'Links',
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => LinkType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+            'by_reference' => false,
+            'attr' => [
+                'class' => 'collection collection-complex',
+                'help_block' => '',
+            ],
+            'mapped' => false,
+            'data' => $work->getLinks(),
+        ]);
         $builder->add('summary', TextareaType::class, [
             'label' => 'Summary',
             'required' => false,
@@ -50,7 +71,7 @@ class WorkType extends AbstractType {
         ]);
         $builder->add('location', TextareaType::class, [
             'label' => 'Location',
-            'required' => true,
+            'required' => false,
             'attr' => [
                 'help_block' => '',
                 'class' => 'tinymce',
@@ -68,5 +89,9 @@ class WorkType extends AbstractType {
         $resolver->setDefaults([
             'data_class' => Work::class,
         ]);
+        $resolver->setRequired([
+            Work::class => 'work',
+        ]);
+
     }
 }
