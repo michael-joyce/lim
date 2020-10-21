@@ -64,7 +64,7 @@ class Work extends AbstractEntity implements LinkableInterface {
      * {@inheritdoc}
      */
     public function __toString() : string {
-        return $this->title;
+        return strip_tags($this->title);
     }
 
     public function getTitle() : ?string {

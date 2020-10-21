@@ -20,6 +20,12 @@ function getTinyMceConfig(editorUploadPath) {
         image_title: true,
 
         style_formats_merge: true,
+        cleanup: true,
+        remove_linebreaks: true,
+        convert_newlines_to_brs: false,
+        inline_styles : false,
+        entity_encoding: 'raw',
+        paste_auto_cleanup_on_paste: true
     };
 
 }

@@ -37,19 +37,4 @@ class ReferenceRepository extends ServiceEntityRepository {
             ->getQuery()
         ;
     }
-
-    /**
-     * @param string $q
-     *
-     * @return Collection|Reference[]
-     */
-    public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
-        $qb = $this->createQueryBuilder('reference');
-        $qb->andWhere('reference.column LIKE :q');
-        $qb->orderBy('reference.column', 'ASC');
-        $qb->setParameter('q', "{$q}%");
-
-        return $qb->getQuery()->execute();
-    }
 }

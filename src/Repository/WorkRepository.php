@@ -44,10 +44,9 @@ class WorkRepository extends ServiceEntityRepository {
      * @return Collection|Work[]
      */
     public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('work');
-        $qb->andWhere('work.column LIKE :q');
-        $qb->orderBy('work.column', 'ASC');
+        $qb->andWhere('work.title LIKE :q');
+        $qb->orderBy('work.title', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery()->execute();
