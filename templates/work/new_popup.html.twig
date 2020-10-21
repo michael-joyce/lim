@@ -1,15 +1,15 @@
-    {% extends 'popup.html.twig' %}
+{% extends 'popup.html.twig' %}
 
     {% block title %}New Work {% endblock %}
 
     {% block body %}
-    <h1>New Work</h1>
+        <h1>New Work</h1>
 
-    {% embed 'work/partial/form.html.twig' %}
-    {% endembed %}
+        {% embed 'work/partial/form.html.twig' %}
+        {% endembed %}
 
     {% endblock %}
 
     {% block javascripts %}
-    {% include '@NinesEditor/editor/widget.html.twig' %}
+        {% include '@NinesEditor/editor/widget.html.twig' %}
     {% endblock %}

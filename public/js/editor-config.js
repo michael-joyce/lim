@@ -9,9 +9,9 @@ function getTinyMceConfig(editorUploadPath) {
         height: 320,
         menubar: 'edit insert view format tools',
 
-        toolbar: "undo redo | styleselect | paste | bold italic | alignleft "
-            + "aligncenter alignright alignjustify | "
-            + "bullist numlist outdent indent | link | code",
+        toolbar: 'undo redo | styleselect | paste | bold italic | alignleft '
+            + 'aligncenter alignright alignjustify | '
+            + 'bullist numlist outdent indent | link | code',
 
         image_caption: true,
         images_upload_url: editorUploadPath,

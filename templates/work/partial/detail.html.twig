@@ -1,55 +1,54 @@
-
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
             <th>Title</th>
             <td>
-                                                            {{ work.title|raw }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ work.title|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Citation</th>
             <td>
-                                                            {{ work.citation|raw }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ work.citation|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Summary</th>
             <td>
-                                                            {{ work.summary|raw }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ work.summary|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Location</th>
             <td>
-                                                            {{ work.location|raw }}
-                                  </td>
-          </tr>
-          
-                                                                  <tr>
-                <th>Reference</th>
-                <td>
-                  {% if work.references|length > 0 %}
-                  <ul>
-                      {% for reference in work.references %} 
-                      <li>
-                          <a href='{{ path("reference_show", {"id":reference.id }) }}'>
-                              {{ reference }}
-                          </a>
-                      </li>
-                      {% endfor %}
-                  </ul>
-                  {% endif %}
-                </td>
-              </tr>
-          <tr>
-        <th>Created</th>
-        <td>{{ work.created|date }}</td>
-    </tr>
-    <tr>
-        <th>Updated</th>
-        <td>{{ work.updated|date }}</td>
-    </tr>
+                {{ work.location|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Reference</th>
+            <td>
+                {% if work.references|length > 0 %}
+                    <ul>
+                        {% for reference in work.references %}
+                            <li>
+                                <a href='{{ path("reference_show", {"id":reference.id }) }}'>
+                                    {{ reference }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ work.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ work.updated|date }}</td>
+        </tr>
     </tbody>
 </table>
 

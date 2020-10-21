@@ -1,29 +1,29 @@
-  <table class="table table-bordered table-condensed table-hover table-striped">
-      <thead>
-          <tr>
-              <th>ID</th>                                       <th>Entity</th>
-                                                         <th>Description</th>
-                  
-          </tr>
-      </thead>
-      <tbody>
-      {% for reference in references %}
-          <tr>
-              <td>
-                  <a href="{{ path('reference_show', { 'id': reference.id }) }}">
-                      {{ reference.id }}
-                  </a>
-              </td>
-              <td>
-                  {{ reference.entity }}
-              </td>
-          
-              <td>
-                  {{ reference.description|raw }}
-              </td>
-          
-          </tr>
-      {% endfor %}
-      </tbody>
-  </table>
-  
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Entity</th>
+            <th>Description</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for reference in references %}
+            <tr>
+                <td>
+                    <a href="{{ path('reference_show', { 'id': reference.id }) }}">
+                        {{ reference.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ reference.entity }}
+                </td>
+
+                <td>
+                    {{ reference.description|raw }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

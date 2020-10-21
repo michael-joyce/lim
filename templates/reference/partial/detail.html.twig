@@ -1,43 +1,42 @@
-
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
             <th>Entity</th>
             <td>
-                                                            {{ reference.entity }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ reference.entity }}
+            </td>
+        </tr>
+        <tr>
             <th>Description</th>
             <td>
-                                                            {{ reference.description|raw }}
-                                  </td>
-          </tr>
-          
-                                                                  <tr>
-                <th>ReferenceRole</th>
-                <td>
+                {{ reference.description|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>ReferenceRole</th>
+            <td>
                 {% if reference.referenceRole %}
-                  <a href='{{ path("reference_role_show", {"id": reference.referenceRole.id}) }}'>{{ reference.referenceRole }}</a>
-                  {% endif %}
-                </td>
-              </tr>
-                                                                  <tr>
-                <th>Work</th>
-                <td>
+                    <a href='{{ path("reference_role_show", {"id": reference.referenceRole.id}) }}'>{{ reference.referenceRole }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Work</th>
+            <td>
                 {% if reference.work %}
-                  <a href='{{ path("work_show", {"id": reference.work.id}) }}'>{{ reference.work }}</a>
-                  {% endif %}
-                </td>
-              </tr>
-          <tr>
-        <th>Created</th>
-        <td>{{ reference.created|date }}</td>
-    </tr>
-    <tr>
-        <th>Updated</th>
-        <td>{{ reference.updated|date }}</td>
-    </tr>
+                    <a href='{{ path("work_show", {"id": reference.work.id}) }}'>{{ reference.work }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ reference.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ reference.updated|date }}</td>
+        </tr>
     </tbody>
 </table>
 

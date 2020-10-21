@@ -1,49 +1,48 @@
-
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
             <th>Name</th>
             <td>
-                                                            {{ reference_role.name }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ reference_role.name }}
+            </td>
+        </tr>
+        <tr>
             <th>Label</th>
             <td>
-                                                            {{ reference_role.label }}
-                                  </td>
-          </tr>
-          <tr>
+                {{ reference_role.label }}
+            </td>
+        </tr>
+        <tr>
             <th>Description</th>
             <td>
-                                                            {{ reference_role.description|raw }}
-                                  </td>
-          </tr>
-          
-                                                                  <tr>
-                <th>Reference</th>
-                <td>
-                  {% if reference_role.references|length > 0 %}
-                  <ul>
-                      {% for reference in reference_role.references %} 
-                      <li>
-                          <a href='{{ path("reference_show", {"id":reference.id }) }}'>
-                              {{ reference }}
-                          </a>
-                      </li>
-                      {% endfor %}
-                  </ul>
-                  {% endif %}
-                </td>
-              </tr>
-          <tr>
-        <th>Created</th>
-        <td>{{ reference_role.created|date }}</td>
-    </tr>
-    <tr>
-        <th>Updated</th>
-        <td>{{ reference_role.updated|date }}</td>
-    </tr>
+                {{ reference_role.description|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Reference</th>
+            <td>
+                {% if reference_role.references|length > 0 %}
+                    <ul>
+                        {% for reference in reference_role.references %}
+                            <li>
+                                <a href='{{ path("reference_show", {"id":reference.id }) }}'>
+                                    {{ reference }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ reference_role.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ reference_role.updated|date }}</td>
+        </tr>
     </tbody>
 </table>
 
