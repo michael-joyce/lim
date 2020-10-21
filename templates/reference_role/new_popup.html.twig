@@ -1,0 +1,15 @@
+    {% extends 'popup.html.twig' %}
+
+    {% block title %}New Reference Role {% endblock %}
+
+    {% block body %}
+    <h1>New Reference Role</h1>
+
+    {% embed 'reference_role/partial/form.html.twig' %}
+    {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

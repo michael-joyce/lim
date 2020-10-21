@@ -72,9 +72,9 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-//        $browse->addChild('Items', [
-//            'route' => 'contributor_role_index',
-//        ]);
+        $browse->addChild('Works', [
+            'route' => 'work_index',
+        ]);
 
         if ($this->hasRole('ROLE_CONTENT_ADMIN')) {
             $divider = $browse->addChild('divider_content', [
@@ -83,6 +83,13 @@ class Builder implements ContainerAwareInterface {
             $divider->setAttributes([
                 'role' => 'separator',
                 'class' => 'divider',
+            ]);
+            $browse->addChild('Locations', [
+                'route' => 'location_index',
+            ]);
+
+            $browse->addChild('Reference Roles', [
+                'route' => 'reference_role_index',
             ]);
         }
 
@@ -96,6 +103,9 @@ class Builder implements ContainerAwareInterface {
             ]);
             $browse->addChild('Links', [
                 'route' => 'link_index',
+            ]);
+            $browse->addChild('References', [
+                'route' => 'reference_index',
             ]);
         }
 

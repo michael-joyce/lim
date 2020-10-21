@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Link;
-use App\Entity\LinkableInterface;
-use App\Repository\LinkRepository;
+use App\Entity\Reference;
+use App\Entity\ReferenceableInterface;
+use App\Repository\ReferenceRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * Commenting service for Symfony.
  */
-class LinkManager implements EventSubscriber {
+class ReferenceManager implements EventSubscriber {
     /**
      * @var EntityManagerInterface
      */
@@ -52,9 +52,9 @@ class LinkManager implements EventSubscriber {
     private $routing;
 
     /**
-     * @var LinkRepository
+     * @var ReferenceRepository
      */
-    private $linkRepository;
+    private $referenceRepository;
 
     /**
      * Build the commenting service.
@@ -89,19 +89,19 @@ class LinkManager implements EventSubscriber {
     /**
      * @required
      */
-    public function setLinkRepository(LinkRepository $linkRepository) : void {
-        $this->linkRepository = $linkRepository;
+    public function setReferenceRepository(ReferenceRepository $referenceRepository) : void {
+        $this->referenceRepository = $referenceRepository;
     }
 
     /**
-     * Check if an entity is configured to accept links.
+     * Check if an entity is configured to accept references.
      *
      * @param AbstractEntity $entity
      *
      * @return bool
      */
-    public function acceptsLinks($entity) {
-        return $entity instanceof LinkableInterface;
+    public function acceptsReferences($entity) {
+        return $entity instanceof ReferenceableInterface;
     }
 
     /**
@@ -109,17 +109,17 @@ class LinkManager implements EventSubscriber {
      *
      * @return mixed
      */
-    public function findEntity(Link $link) {
-        [$class, $id] = explode(':', $link->getEntity());
+    public function findEntity(Reference $reference) {
+        [$class, $id] = explode(':', $reference->getEntity());
 
         return $this->em->getRepository($class)->find($id);
     }
 
     /**
-     * Return the short class name for the entity a link refers to.
+     * Return the short class name for the entity a reference refers to.
      */
-    public function entityType(Link $link) : ?string {
-        $entity = $this->findEntity($link);
+    public function entityType(Reference $reference) : ?string {
+        $entity = $this->findEntity($reference);
         if ( ! $entity) {
             return null;
         }
@@ -127,7 +127,7 @@ class LinkManager implements EventSubscriber {
         try {
             $reflection = new ReflectionClass($entity);
         } catch (ReflectionException $e) {
-            $this->logger->error('Cannot find entity for link ' . $link->getEntity());
+            $this->logger->error('Cannot find entity for reference ' . $reference->getEntity());
 
             return null;
         }
@@ -136,47 +136,47 @@ class LinkManager implements EventSubscriber {
     }
 
     /**
-     * Find the links for an entity.
+     * Find the references for an entity.
      *
      * @param mixed $entity
      *
-     * @return Collection|Link[]
+     * @return Collection|Reference[]
      */
-    public function findLinks($entity) {
+    public function findReferences($entity) {
         $class = get_class($entity);
 
-        return $this->linkRepository->findBy([
+        return $this->referenceRepository->findBy([
             'entity' => $class . ':' . $entity->getId(),
         ]);
     }
 
     /**
-     * Add a link to an entity.
+     * Add a reference to an entity.
      *
      * @param mixed $entity
      *
      * @throws Exception
      *
-     * @return Link
+     * @return Reference
      */
-    public function addLink(LinkableInterface $entity, Link $link) {
-        $link->setEntity($entity);
-        $this->em->persist($link);
+    public function addReference(ReferenceableInterface $entity, Reference $reference) {
+        $reference->setEntity($entity);
+        $this->em->persist($reference);
 
-        return $link;
+        return $reference;
     }
 
-    public function setLinks(LinkableInterface $entity, $links) : void {
-        foreach ($entity->getLinks() as $link) {
-            $this->em->remove($link);
+    public function setReferences(ReferenceableInterface $entity, $references) : void {
+        foreach ($entity->getReferences() as $reference) {
+            $this->em->remove($reference);
         }
-        foreach ($links as $link) {
-            $entity->addLink($link);
-            $this->em->persist($link);
+        foreach ($references as $reference) {
+            $entity->addReference($reference);
+            $this->em->persist($reference);
         }
     }
 
-    public function linkToEntity($citation) {
+    public function referenceToEntity($citation) {
         [$class, $id] = explode(':', $citation->getEntity());
 
         return $this->router->generate($this->routing[$class], ['id' => $id]);
@@ -191,19 +191,19 @@ class LinkManager implements EventSubscriber {
 
     public function postLoad(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
-        if ( ! $entity instanceof LinkableInterface) {
+        if ( ! $entity instanceof ReferenceableInterface) {
             return;
         }
-        $entity->setLinks($this->findLinks($entity));
+        $entity->setReferences($this->findReferences($entity));
     }
 
     public function preRemove(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
-        if ( ! $entity instanceof LinkableInterface) {
+        if ( ! $entity instanceof ReferenceableInterface) {
             return;
         }
-        foreach ($entity->getLinks() as $link) {
-            $this->em->remove($link);
+        foreach ($entity->getReferences() as $reference) {
+            $this->em->remove($reference);
         }
     }
 }

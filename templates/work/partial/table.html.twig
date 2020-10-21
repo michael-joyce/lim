@@ -1,0 +1,39 @@
+  <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>                                       <th>Title</th>
+                                                         <th>Citation</th>
+                                                         <th>Summary</th>
+                                                         <th>Location</th>
+                  
+          </tr>
+      </thead>
+      <tbody>
+      {% for work in works %}
+          <tr>
+              <td>
+                  <a href="{{ path('work_show', { 'id': work.id }) }}">
+                      {{ work.id }}
+                  </a>
+              </td>
+              <td>
+                  {{ work.title|raw }}
+              </td>
+          
+              <td>
+                  {{ work.citation|raw }}
+              </td>
+          
+              <td>
+                  {{ work.summary|raw }}
+              </td>
+          
+              <td>
+                  {{ work.location|raw }}
+              </td>
+          
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  

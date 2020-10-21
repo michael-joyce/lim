@@ -17,9 +17,13 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
  */
-class Location extends AbstractEntity implements LinkableInterface {
+class Location extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
     use LinkableTrait {
         LinkableTrait::__construct as link_constructor;
+    }
+
+    use ReferenceableTrait {
+        ReferenceableTrait::__construct as reference_constructor;
     }
 
     /**
@@ -78,6 +82,7 @@ class Location extends AbstractEntity implements LinkableInterface {
     public function __construct() {
         parent::__construct();
         $this->link_constructor();
+        $this->reference_constructor();
     }
 
     /**

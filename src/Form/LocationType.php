@@ -116,7 +116,7 @@ class LocationType extends AbstractType {
             'data_class' => Location::class,
         ]);
         $resolver->setRequired([
-            Location::class => 'location'
+            Location::class => 'location',
         ]);
     }
 }

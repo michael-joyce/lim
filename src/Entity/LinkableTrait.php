@@ -29,7 +29,7 @@ trait LinkableTrait {
 
     public function setLinks($links) {
         $this->links = new ArrayCollection();
-        foreach($links as $link) {
+        foreach ($links as $link) {
             $this->addLink($link);
         }
         $this->links = $links;
