@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Form;
 
-use App\Entity\Person;
 use App\Entity\CircaDate;
 use App\Entity\Location;
+use App\Entity\Person;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -19,14 +24,10 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  * Person form.
  */
 class PersonType extends AbstractType {
-
     /**
      * Add form fields to $builder.
-     *
-     * @param FormBuilderInterface $builder
-     * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('fullName', TextType::class, [
             'label' => 'Full Name',
             'required' => true,
@@ -104,7 +105,6 @@ class PersonType extends AbstractType {
                 'add_label' => 'Add Location',
             ],
         ]);
-
     }
 
     /**
@@ -112,13 +112,10 @@ class PersonType extends AbstractType {
      *
      * Set default, optional, and required options passed to the
      * buildForm() method via the $options parameter.
-     *
-     * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
             'data_class' => Person::class,
         ]);
     }
-
 }

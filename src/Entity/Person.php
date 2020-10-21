@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use App\Repository\PersonRepository;
@@ -14,11 +20,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  */
 class Person extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
-
-    public const MALE = 'm';
-
-    public const FEMALE = 'f';
-
     use LinkableTrait {
         LinkableTrait::__construct as link_constructor;
     }
@@ -26,6 +27,10 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     use ReferenceableTrait {
         ReferenceableTrait::__construct as reference_constructor;
     }
+
+    public const MALE = 'm';
+
+    public const FEMALE = 'f';
 
     /**
      * @var string
@@ -83,17 +88,10 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     private $homes;
 
     /**
-     * @var Occupation[]|Collection
+     * @var Collection|Occupation[]
      * @ORM\ManyToMany(targetEntity="Occupation", inversedBy="persons")
      */
     private $occupations;
-
-    /**
-     * @inheritDoc
-     */
-    public function __toString() : string {
-        return $this->fullName;
-    }
 
     public function __construct() {
         parent::__construct();
@@ -103,97 +101,88 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
         $this->occupations = new ArrayCollection();
     }
 
-    public function getFullName(): ?string
-    {
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString() : string {
         return $this->fullName;
     }
 
-    public function setFullName(string $fullName): self
-    {
+    public function getFullName() : ?string {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName) : self {
         $this->fullName = $fullName;
 
         return $this;
     }
 
-    public function getSortableName(): ?string
-    {
+    public function getSortableName() : ?string {
         return $this->sortableName;
     }
 
-    public function setSortableName(string $sortableName): self
-    {
+    public function setSortableName(string $sortableName) : self {
         $this->sortableName = $sortableName;
 
         return $this;
     }
 
-    public function getGender(): ?string
-    {
+    public function getGender() : ?string {
         return $this->gender;
     }
 
-    public function setGender(string $gender): self
-    {
+    public function setGender(string $gender) : self {
         $this->gender = $gender;
 
         return $this;
     }
 
-    public function getBiography(): ?string
-    {
+    public function getBiography() : ?string {
         return $this->biography;
     }
 
-    public function setBiography(?string $biography): self
-    {
+    public function setBiography(?string $biography) : self {
         $this->biography = $biography;
 
         return $this;
     }
 
-    public function getBirthYear(): ?CircaDate
-    {
+    public function getBirthYear() : ?CircaDate {
         return $this->birthYear;
     }
 
-    public function setBirthYear(?CircaDate $birthYear): self
-    {
+    public function setBirthYear(?CircaDate $birthYear) : self {
         $this->birthYear = $birthYear;
 
         return $this;
     }
 
-    public function getDeathYear(): ?CircaDate
-    {
+    public function getDeathYear() : ?CircaDate {
         return $this->deathYear;
     }
 
-    public function setDeathYear(?CircaDate $deathYear): self
-    {
+    public function setDeathYear(?CircaDate $deathYear) : self {
         $this->deathYear = $deathYear;
 
         return $this;
     }
 
-    public function getBirthPlace(): ?Location
-    {
+    public function getBirthPlace() : ?Location {
         return $this->birthPlace;
     }
 
-    public function setBirthPlace(?Location $birthPlace): self
-    {
+    public function setBirthPlace(?Location $birthPlace) : self {
         $this->birthPlace = $birthPlace;
 
         return $this;
     }
 
-    public function getDeathPlace(): ?Location
-    {
+    public function getDeathPlace() : ?Location {
         return $this->deathPlace;
     }
 
-    public function setDeathPlace(?Location $deathPlace): self
-    {
+    public function setDeathPlace(?Location $deathPlace) : self {
         $this->deathPlace = $deathPlace;
 
         return $this;
@@ -202,22 +191,19 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     /**
      * @return Collection|Location[]
      */
-    public function getHomes(): Collection
-    {
+    public function getHomes() : Collection {
         return $this->homes;
     }
 
-    public function addHome(Location $home): self
-    {
-        if (!$this->homes->contains($home)) {
+    public function addHome(Location $home) : self {
+        if ( ! $this->homes->contains($home)) {
             $this->homes[] = $home;
         }
 
         return $this;
     }
 
-    public function removeHome(Location $home): self
-    {
+    public function removeHome(Location $home) : self {
         if ($this->homes->contains($home)) {
             $this->homes->removeElement($home);
         }
@@ -228,27 +214,23 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     /**
      * @return Collection|Occupation[]
      */
-    public function getOccupations(): Collection
-    {
+    public function getOccupations() : Collection {
         return $this->occupations;
     }
 
-    public function addOccupation(Occupation $occupation): self
-    {
-        if (!$this->occupations->contains($occupation)) {
+    public function addOccupation(Occupation $occupation) : self {
+        if ( ! $this->occupations->contains($occupation)) {
             $this->occupations[] = $occupation;
         }
 
         return $this;
     }
 
-    public function removeOccupation(Occupation $occupation): self
-    {
+    public function removeOccupation(Occupation $occupation) : self {
         if ($this->occupations->contains($occupation)) {
             $this->occupations->removeElement($occupation);
         }
 
         return $this;
     }
-
 }

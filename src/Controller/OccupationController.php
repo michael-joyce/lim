@@ -1,41 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Occupation;
 use App\Form\OccupationType;
 use App\Repository\OccupationRepository;
-
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/occupation")
  */
-class OccupationController extends AbstractController implements PaginatorAwareInterface
-{
+class OccupationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**
      * @Route("/", name="occupation_index", methods={"GET"})
-     * @param Request $request
-     * @param OccupationRepository $occupationRepository
      *
      * @Template()
-     *
-     * @return array
      */
-    public function index(Request $request, OccupationRepository $occupationRepository) : array
-    {
+    public function index(Request $request, OccupationRepository $occupationRepository) : array {
         $query = $occupationRepository->indexQuery();
         $pageSize = $this->getParameter('page_size');
         $page = $request->query->getint('page', 1);
@@ -56,7 +55,7 @@ class OccupationController extends AbstractController implements PaginatorAwareI
         $q = $request->query->get('q');
         if ($q) {
             $query = $occupationRepository->searchQuery($q);
-            $occupations = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), array('wrap-queries'=>true));
+            $occupations = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), ['wrap-queries' => true]);
         } else {
             $occupations = [];
         }
@@ -81,7 +80,7 @@ class OccupationController extends AbstractController implements PaginatorAwareI
         foreach ($occupationRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
-                'text' => (string)$result,
+                'text' => (string) $result,
             ];
         }
 
@@ -92,7 +91,6 @@ class OccupationController extends AbstractController implements PaginatorAwareI
      * @Route("/new", name="occupation_new", methods={"GET","POST"})
      * @Template()
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @param Request $request
      *
      * @return array|RedirectResponse
      */
@@ -120,7 +118,6 @@ class OccupationController extends AbstractController implements PaginatorAwareI
      * @Route("/new_popup", name="occupation_new_popup", methods={"GET","POST"})
      * @Template()
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @param Request $request
      *
      * @return array|RedirectResponse
      */
@@ -131,7 +128,6 @@ class OccupationController extends AbstractController implements PaginatorAwareI
     /**
      * @Route("/{id}", name="occupation_show", methods={"GET"})
      * @Template()
-     * @param Occupation $occupation
      *
      * @return array
      */
@@ -144,8 +140,6 @@ class OccupationController extends AbstractController implements PaginatorAwareI
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}/edit", name="occupation_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Occupation $occupation
      *
      * @Template()
      *
@@ -164,15 +158,13 @@ class OccupationController extends AbstractController implements PaginatorAwareI
 
         return [
             'occupation' => $occupation,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}", name="occupation_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Occupation $occupation
      *
      * @return RedirectResponse
      */

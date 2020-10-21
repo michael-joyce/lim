@@ -76,19 +76,19 @@ class Location extends AbstractEntity implements LinkableInterface, Referenceabl
     private $country;
 
     /**
-     * @var Person[]|Collection
+     * @var Collection|Person[]
      * @ORM\OneToMany(targetEntity="Person", mappedBy="birthPlace")
      */
     private $personsBorn;
 
     /**
-     * @var Person[]|Collection
+     * @var Collection|Person[]
      * @ORM\OneToMany(targetEntity="Person", mappedBy="deathPlace")
      */
     private $personsDied;
 
     /**
-     * @var Person[]|Collection
+     * @var Collection|Person[]
      * @ORM\ManyToMany(targetEntity="Person", mappedBy="homes")
      */
     private $residents;
