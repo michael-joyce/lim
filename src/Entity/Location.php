@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\LocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
@@ -74,6 +76,24 @@ class Location extends AbstractEntity implements LinkableInterface, Referenceabl
     private $country;
 
     /**
+     * @var Person[]|Collection
+     * @ORM\OneToMany(targetEntity="Person", mappedBy="birthPlace")
+     */
+    private $personsBorn;
+
+    /**
+     * @var Person[]|Collection
+     * @ORM\OneToMany(targetEntity="Person", mappedBy="deathPlace")
+     */
+    private $personsDied;
+
+    /**
+     * @var Person[]|Collection
+     * @ORM\ManyToMany(targetEntity="Person", mappedBy="homes")
+     */
+    private $residents;
+
+    /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
@@ -83,6 +103,9 @@ class Location extends AbstractEntity implements LinkableInterface, Referenceabl
         parent::__construct();
         $this->link_constructor();
         $this->reference_constructor();
+        $this->personsBorn = new ArrayCollection();
+        $this->personsDied = new ArrayCollection();
+        $this->residents = new ArrayCollection();
     }
 
     /**
