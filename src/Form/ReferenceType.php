@@ -28,9 +28,20 @@ class ReferenceType extends AbstractType {
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('entity', TextType::class, [
-            'label' => 'Entity',
-            'required' => true,
+        $builder->add('referenceRole', Select2EntityType::class, [
+            'label' => 'Reference Role',
+            'class' => ReferenceRole::class,
+            'remote_route' => 'reference_role_typeahead',
+            'allow_clear' => true,
+            'attr' => [
+                'help_block' => '',
+            ],
+        ]);
+        $builder->add('work', Select2EntityType::class, [
+            'label' => 'Work',
+            'class' => Work::class,
+            'remote_route' => 'work_typeahead',
+            'allow_clear' => true,
             'attr' => [
                 'help_block' => '',
             ],
@@ -44,29 +55,6 @@ class ReferenceType extends AbstractType {
             ],
         ]);
 
-        $builder->add('referenceRole', Select2EntityType::class, [
-            'label' => 'ReferenceRole',
-            'class' => ReferenceRole::class,
-            'remote_route' => 'reference_role_typeahead',
-            'allow_clear' => true,
-            'attr' => [
-                'help_block' => '',
-                'add_path' => 'reference_role_new_popup',
-                'add_label' => 'Add ReferenceRole',
-            ],
-        ]);
-
-        $builder->add('work', Select2EntityType::class, [
-            'label' => 'Work',
-            'class' => Work::class,
-            'remote_route' => 'work_typeahead',
-            'allow_clear' => true,
-            'attr' => [
-                'help_block' => '',
-                'add_path' => 'work_new_popup',
-                'add_label' => 'Add Work',
-            ],
-        ]);
     }
 
     /**

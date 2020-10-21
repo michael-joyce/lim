@@ -95,6 +95,24 @@ class LocationType extends AbstractType {
             'mapped' => false,
             'data' => $location->getLinks(),
         ]);
+        $builder->add('references', CollectionType::class, [
+            'label' => 'References',
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => ReferenceType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+            'by_reference' => false,
+            'attr' => [
+                'class' => 'collection collection-complex',
+                'help_block' => '',
+            ],
+            'mapped' => false,
+            'data' => $location->getReferences(),
+        ]);
         $builder->add('description', TextareaType::class, [
             'label' => 'Description',
             'required' => false,
