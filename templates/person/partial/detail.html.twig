@@ -1,0 +1,104 @@
+
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Full Name</th>
+            <td>
+                                                            {{ person.fullName }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Sortable Name</th>
+            <td>
+                                                            {{ person.sortableName }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>
+                                                            {{ person.gender }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Biography</th>
+            <td>
+                                                            {{ person.biography|raw }}
+                                  </td>
+          </tr>
+          
+                                                                  <tr>
+                <th>CircaDate</th>
+                <td>
+                {% if person.birthYear %}
+                  <a href='{{ path("circa_date_show", {"id": person.birthYear.id}) }}'>{{ person.birthYear }}</a>
+                  {% endif %}
+                </td>
+              </tr>
+                                                                  <tr>
+                <th>CircaDate</th>
+                <td>
+                {% if person.deathYear %}
+                  <a href='{{ path("circa_date_show", {"id": person.deathYear.id}) }}'>{{ person.deathYear }}</a>
+                  {% endif %}
+                </td>
+              </tr>
+                                                                  <tr>
+                <th>Location</th>
+                <td>
+                {% if person.birthPlace %}
+                  <a href='{{ path("location_show", {"id": person.birthPlace.id}) }}'>{{ person.birthPlace }}</a>
+                  {% endif %}
+                </td>
+              </tr>
+                                                                  <tr>
+                <th>Location</th>
+                <td>
+                {% if person.deathPlace %}
+                  <a href='{{ path("location_show", {"id": person.deathPlace.id}) }}'>{{ person.deathPlace }}</a>
+                  {% endif %}
+                </td>
+              </tr>
+                                                                  <tr>
+                <th>Location</th>
+                <td>
+                  {% if person.homes|length > 0 %}
+                  <ul>
+                      {% for location in person.homes %} 
+                      <li>
+                          <a href='{{ path("location_show", {"id":location.id }) }}'>
+                              {{ location }}
+                          </a>
+                      </li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </td>
+              </tr>
+                                                                  <tr>
+                <th>Occupation</th>
+                <td>
+                  {% if person.occupations|length > 0 %}
+                  <ul>
+                      {% for occupation in person.occupations %} 
+                      <li>
+                          <a href='{{ path("occupation_show", {"id":occupation.id }) }}'>
+                              {{ occupation }}
+                          </a>
+                      </li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </td>
+              </tr>
+          <tr>
+        <th>Created</th>
+        <td>{{ person.created|date }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ person.updated|date }}</td>
+    </tr>
+    </tbody>
+</table>
+
+
