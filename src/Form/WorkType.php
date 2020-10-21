@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Location;
 use App\Entity\Work;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -92,6 +91,5 @@ class WorkType extends AbstractType {
         $resolver->setRequired([
             Work::class => 'work',
         ]);
-
     }
 }
