@@ -15,7 +15,7 @@
         <tr>
             <th>Gender</th>
             <td>
-                {{ person.gender }}
+                {% include 'person/partial/gender.html.twig' with {'person': person} %}
             </td>
         </tr>
         <tr>
@@ -26,23 +26,19 @@
         </tr>
 
         <tr>
-            <th>CircaDate</th>
+            <th>Birth Year</th>
             <td>
-                {% if person.birthYear %}
-                    <a href='{{ path("circa_date_show", {"id": person.birthYear.id}) }}'>{{ person.birthYear }}</a>
-                {% endif %}
+                {{ person.birthYear }}
             </td>
         </tr>
         <tr>
-            <th>CircaDate</th>
+            <th>Death Year</th>
             <td>
-                {% if person.deathYear %}
-                    <a href='{{ path("circa_date_show", {"id": person.deathYear.id}) }}'>{{ person.deathYear }}</a>
-                {% endif %}
+                {{ person.deathYear }}
             </td>
         </tr>
         <tr>
-            <th>Location</th>
+            <th>Birth Place</th>
             <td>
                 {% if person.birthPlace %}
                     <a href='{{ path("location_show", {"id": person.birthPlace.id}) }}'>{{ person.birthPlace }}</a>
@@ -50,7 +46,7 @@
             </td>
         </tr>
         <tr>
-            <th>Location</th>
+            <th>Death Place</th>
             <td>
                 {% if person.deathPlace %}
                     <a href='{{ path("location_show", {"id": person.deathPlace.id}) }}'>{{ person.deathPlace }}</a>
@@ -58,7 +54,7 @@
             </td>
         </tr>
         <tr>
-            <th>Location</th>
+            <th>Residences</th>
             <td>
                 {% if person.homes|length > 0 %}
                     <ul>

@@ -33,9 +33,8 @@ class PersonRepository extends ServiceEntityRepository {
      */
     public function indexQuery() {
         return $this->createQueryBuilder('person')
-            ->orderBy('person.id')
-            ->getQuery()
-        ;
+            ->orderBy('person.sortableName')
+            ->getQuery();
     }
 
     /**
@@ -44,11 +43,10 @@ class PersonRepository extends ServiceEntityRepository {
      * @return Collection|Person[]
      */
     public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('person');
-        $qb->andWhere('person.column LIKE :q');
-        $qb->orderBy('person.column', 'ASC');
-        $qb->setParameter('q', "{$q}%");
+        $qb->andWhere('person.fullName LIKE :q');
+        $qb->orderBy('person.sortableName', 'ASC');
+        $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery()->execute();
     }

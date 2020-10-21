@@ -14,6 +14,7 @@ use App\Entity\CircaDate;
 use App\Entity\Location;
 use App\Entity\Person;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,9 +43,14 @@ class PersonType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('gender', TextType::class, [
-            'label' => 'Gender',
-            'required' => true,
+        $builder->add('gender', ChoiceType::class, [
+            'expanded' => true,
+            'multiple' => false,
+            'choices' => [
+                'Female' => Person::FEMALE,
+                'Male' => Person::MALE,
+                'Unknown' => Person::UNKNOWN,
+            ],
             'attr' => [
                 'help_block' => '',
             ],
@@ -58,27 +64,19 @@ class PersonType extends AbstractType {
             ],
         ]);
 
-        $builder->add('birthYear', Select2EntityType::class, [
-            'label' => 'CircaDate',
-            'class' => CircaDate::class,
-            'remote_route' => 'circa_date_typeahead',
-            'allow_clear' => true,
+        $builder->add('birthYear', TextType::class, [
+            'label' => 'Birth Year',
+            'required' => false,
             'attr' => [
                 'help_block' => '',
-                'add_path' => 'circa_date_new_popup',
-                'add_label' => 'Add CircaDate',
             ],
         ]);
 
-        $builder->add('deathYear', Select2EntityType::class, [
-            'label' => 'CircaDate',
-            'class' => CircaDate::class,
-            'remote_route' => 'circa_date_typeahead',
-            'allow_clear' => true,
+        $builder->add('deathYear', TextType::class, [
+            'label' => 'Death Year',
+            'required' => false,
             'attr' => [
                 'help_block' => '',
-                'add_path' => 'circa_date_new_popup',
-                'add_label' => 'Add CircaDate',
             ],
         ]);
 

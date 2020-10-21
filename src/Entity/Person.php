@@ -18,6 +18,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
+ * @ORM\Table(indexes={
+     @ORM\Index(name="person_full_idx", columns={"full_name"}, flags={"fulltext"}),
+     @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ * })
  */
 class Person extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
     use LinkableTrait {
@@ -31,6 +35,8 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
     public const MALE = 'm';
 
     public const FEMALE = 'f';
+
+    public const UNKNOWN = 'u';
 
     /**
      * @var string
@@ -59,13 +65,13 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate")
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist"})
      */
     private $birthYear;
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate")
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist"})
      */
     private $deathYear;
 
@@ -152,8 +158,12 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
         return $this->birthYear;
     }
 
-    public function setBirthYear(?CircaDate $birthYear) : self {
-        $this->birthYear = $birthYear;
+    public function setBirthYear($birthYear) : self {
+        if(is_string($birthYear) || is_numeric($birthYear)) {
+            $this->birthYear = CircaDate::build($birthYear);
+        } else {
+            $this->birthYear = $birthYear;
+        }
 
         return $this;
     }
@@ -162,8 +172,12 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
         return $this->deathYear;
     }
 
-    public function setDeathYear(?CircaDate $deathYear) : self {
-        $this->deathYear = $deathYear;
+    public function setDeathYear($deathYear) : self {
+        if(is_string($deathYear) || is_numeric($deathYear)) {
+            $this->deathYear = CircaDate::build($deathYear);
+        } else {
+            $this->deathYear = $deathYear;
+        }
 
         return $this;
     }
