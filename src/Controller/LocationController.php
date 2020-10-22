@@ -14,6 +14,7 @@ use App\Entity\Location;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
 use App\Service\LinkManager;
+use App\Service\ReferenceManager;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -95,7 +96,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new(Request $request, LinkManager $linkManager) {
+    public function new(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location, ['location' => $location]);
         $form->handleRequest($request);
@@ -105,6 +106,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $em->persist($location);
             $em->flush();
             $linkManager->setLinks($location, $form->get('links')->getData());
+            $referenceManager->setReferences($location, $form->get('references')->getData());
             $em->persist($location);
             $em->flush();
             $this->addFlash('success', 'The new location has been saved.');
@@ -125,8 +127,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
+        return $this->new($request, $linkManager, $referenceManager);
     }
 
     /**
