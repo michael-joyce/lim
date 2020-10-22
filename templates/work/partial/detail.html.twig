@@ -32,9 +32,8 @@
                 {{ work.location|raw }}
             </td>
         </tr>
-
         <tr>
-            <th>Reference</th>
+            <th>Referencing Entries</th>
             <td>
                 {% if work.references|length > 0 %}
                     <ul>
@@ -47,6 +46,14 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contributions</th>
+            <td>
+                {% for contribution in work.contributions %}
+                    {{ contribution.date }} - {{ contribution.name }}<br/>
+                {% endfor %}
             </td>
         </tr>
         <tr>

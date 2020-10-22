@@ -57,7 +57,14 @@
                 {% endfor %}
             </td>
         </tr>
-
+        <tr>
+            <th>Contributions</th>
+            <td>
+                {% for contribution in work.contributions %}
+                    {{ contribution.date }} - {{ contribution.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
         <tr>
             <th>Created</th>
             <td>{{ location.created|date }}</td>

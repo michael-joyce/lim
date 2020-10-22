@@ -19,7 +19,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=WorkRepository::class)
  */
-class Work extends AbstractEntity implements LinkableInterface {
+class Work extends AbstractEntity implements LinkableInterface, ContributorInterface {
+    use ContributorTrait {
+        ContributorTrait::__construct as contributor_constructor;
+    }
     use LinkableTrait {
         LinkableTrait::__construct as link_constructor;
     }
@@ -56,6 +59,7 @@ class Work extends AbstractEntity implements LinkableInterface {
 
     public function __construct() {
         parent::__construct();
+        $this->contributor_constructor();
         $this->link_constructor();
         $this->references = new ArrayCollection();
     }

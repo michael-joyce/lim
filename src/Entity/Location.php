@@ -19,7 +19,11 @@ use phpDocumentor\Reflection\Types\Collection;
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
  */
-class Location extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
+class Location extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
+    use ContributorTrait {
+        ContributorTrait::__construct as contributor_constructor;
+    }
+
     use LinkableTrait {
         LinkableTrait::__construct as link_constructor;
     }
@@ -101,6 +105,7 @@ class Location extends AbstractEntity implements LinkableInterface, Referenceabl
 
     public function __construct() {
         parent::__construct();
+        $this->contributor_constructor();
         $this->link_constructor();
         $this->reference_constructor();
         $this->personsBorn = new ArrayCollection();

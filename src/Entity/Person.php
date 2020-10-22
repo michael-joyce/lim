@@ -22,7 +22,10 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
  * })
  */
-class Person extends AbstractEntity implements LinkableInterface, ReferenceableInterface {
+class Person extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
+    use ContributorTrait {
+        ContributorTrait::__construct as contributor_constructor;
+    }
     use LinkableTrait {
         LinkableTrait::__construct as link_constructor;
     }
@@ -100,6 +103,7 @@ class Person extends AbstractEntity implements LinkableInterface, ReferenceableI
 
     public function __construct() {
         parent::__construct();
+        $this->contributor_constructor();
         $this->link_constructor();
         $this->reference_constructor();
         $this->homes = new ArrayCollection();

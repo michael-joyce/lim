@@ -94,6 +94,14 @@
             </td>
         </tr>
         <tr>
+            <th>Contributions</th>
+            <td>
+                {% for contribution in work.contributions %}
+                    {{ contribution.date }} - {{ contribution.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>References</th>
             <td>
                 {% for reference in person.references %}
