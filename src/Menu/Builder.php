@@ -72,9 +72,6 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-        $browse->addChild('Works', [
-            'route' => 'work_index',
-        ]);
         $browse->addChild('Occupations', [
             'route' => 'occupation_index',
         ]);
