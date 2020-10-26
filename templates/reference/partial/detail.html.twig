@@ -1,6 +1,12 @@
 <table class='table table-bordered table-condensed table-hover table-striped'>
     <tbody>
         <tr>
+            <th>Citation</th>
+            <td>
+                {{ reference.citation|raw }}
+            </td>
+        </tr>
+        <tr>
             <th>Entity</th>
             <td>
                 {{ reference.entity }}
@@ -12,20 +18,11 @@
                 {{ reference.description|raw }}
             </td>
         </tr>
-
         <tr>
-            <th>ReferenceRole</th>
+            <th>Reference Role</th>
             <td>
                 {% if reference.referenceRole %}
                     <a href='{{ path("reference_role_show", {"id": reference.referenceRole.id}) }}'>{{ reference.referenceRole }}</a>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Work</th>
-            <td>
-                {% if reference.work %}
-                    <a href='{{ path("work_show", {"id": reference.work.id}) }}'>{{ reference.work }}</a>
                 {% endif %}
             </td>
         </tr>

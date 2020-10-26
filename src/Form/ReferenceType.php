@@ -36,13 +36,12 @@ class ReferenceType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('work', Select2EntityType::class, [
-            'label' => 'Work',
-            'class' => Work::class,
-            'remote_route' => 'work_typeahead',
-            'allow_clear' => true,
+        $builder->add('citation', TextareaType::class, [
+            'label' => 'Citation',
+            'required' => true,
             'attr' => [
                 'help_block' => '',
+                'class' => 'tinymce',
             ],
         ]);
         $builder->add('description', TextareaType::class, [

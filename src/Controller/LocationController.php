@@ -15,9 +15,13 @@ use App\Form\LocationType;
 use App\Repository\LocationRepository;
 use App\Service\LinkManager;
 use App\Service\ReferenceManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use GeoNames\Client as GeoNamesClient;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -130,6 +134,78 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     public function new_popup(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
         return $this->new($request, $linkManager, $referenceManager);
     }
+
+    /**
+     * Search and display results from the Geonames API in preparation for import.
+     *
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @Route("/import", name="location_import", methods={"GET"})
+     *
+     * @Template
+     *
+     * @return array
+     */
+    public function importSearchAction(Request $request) {
+        $q = $request->query->get('q');
+        $results = [];
+        if ($q) {
+            $user = $this->getParameter('lim.geonames.username');
+            $client = new GeoNamesClient($user);
+            $results = $client->search([
+                'name' => $q,
+                'fcl' => ['A', 'P'],
+                'lang' => 'en',
+            ]);
+        }
+
+        return [
+            'q' => $q,
+            'results' => $results,
+        ];
+    }
+
+    /**
+     * Import one or more search results from the Geonames API.
+     *
+     * @throws Exception
+     *
+     * @return RedirectResponse
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @Route("/import", name="location_import_save", methods={"POST"})
+     */
+    public function importSaveAction(Request $request, EntityManagerInterface $em) {
+        $user = $this->getParameter('lim.geonames.username');
+        $client = new GeoNamesClient($user);
+        $repo = $em->getRepository(Location::class);
+        foreach ($request->request->get('geonameid') as $geonameid) {
+            $data = $client->get([
+                'geonameId' => $geonameid,
+                'lang' => 'en',
+            ]);
+            if ($repo->find($geonameid)) {
+                $this->addFlash('warning', "Geoname #{$geonameid} ({$data->asciiName}) is already in the database.");
+
+                continue;
+            }
+            $location = new Location();
+            $location->setGeonameid($data->geonameId);
+            $location->setName($data->name);
+            $alternateNames = [];
+            $location->setLatitude($data->lat);
+            $location->setLongitude($data->lng);
+            $location->setFclass($data->fcl);
+            $location->setFcode($data->fcode);
+            if(isset($data->countryCode)) {
+                $location->setCountry($data->countryCode);
+            }
+            $em->persist($location);
+        }
+        $em->flush();
+        $this->addFlash('success', 'The selected geonames have been imported.');
+
+        return $this->redirectToRoute('location_import', [$request->query->get('q')]);
+    }
+
 
     /**
      * @Route("/{id}", name="location_show", methods={"GET"})

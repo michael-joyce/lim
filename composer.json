@@ -9,7 +9,6 @@
         "ext-iconv": "*",
         "ext-imagick": "*",
         "ext-json": "*",
-        "doctrine/common": "^2.13",
         "aternus/geonames-client": "^1.0",
         "doctrine/common": "^2.13",
         "ninsuo/symfony-collection": "^2.1",

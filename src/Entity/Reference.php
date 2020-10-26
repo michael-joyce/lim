@@ -30,6 +30,12 @@ class Reference extends AbstractEntity {
 
     /**
      * @var string
+     * @ORM\Column(type="text", nullable=false)
+     */
+    private $citation;
+
+    /**
+     * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -40,12 +46,6 @@ class Reference extends AbstractEntity {
      */
     private $referenceRole;
 
-    /**
-     * @var Work
-     * @ORM\ManyToOne(targetEntity="Work", inversedBy="references")
-     */
-    private $work;
-
     public function __construct() {
         parent::__construct();
     }
@@ -54,7 +54,7 @@ class Reference extends AbstractEntity {
      * {@inheritdoc}
      */
     public function __toString() : string {
-        return $this->work->__toString();
+        return $this->citation;
     }
 
     public function setEntity(AbstractEntity $entity) : void {
@@ -84,16 +84,6 @@ class Reference extends AbstractEntity {
 
     public function setReferenceRole(?ReferenceRole $referenceRole) : self {
         $this->referenceRole = $referenceRole;
-
-        return $this;
-    }
-
-    public function getWork() : ?Work {
-        return $this->work;
-    }
-
-    public function setWork(?Work $work) : self {
-        $this->work = $work;
 
         return $this;
     }

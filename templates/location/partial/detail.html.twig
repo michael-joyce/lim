@@ -25,18 +25,6 @@
             </td>
         </tr>
         <tr>
-            <th>Fclass</th>
-            <td>
-                {{ location.fclass }}
-            </td>
-        </tr>
-        <tr>
-            <th>Fcode</th>
-            <td>
-                {{ location.fcode }}
-            </td>
-        </tr>
-        <tr>
             <th>Country</th>
             <td>
                 {{ location.country }}
@@ -60,7 +48,7 @@
         <tr>
             <th>Contributions</th>
             <td>
-                {% for contribution in work.contributions %}
+                {% for contribution in location.contributions %}
                     {{ contribution.date }} - {{ contribution.name }}<br/>
                 {% endfor %}
             </td>
