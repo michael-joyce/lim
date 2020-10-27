@@ -5,6 +5,15 @@
     {% block body %}
         <h1>New Location</h1>
 
+        <div class='btn-toolbar pull-right'>
+            <div class='btn-group'>
+                <a href="{{ path('location_import') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-import"></span> Import </a>
+            </div>
+        </div>
+
+        <p>Use this form for data entry, or use the Import button to search
+            Geonames and import data from that service.</p>
         {% embed 'location/partial/form.html.twig' %}
         {% endembed %}
 

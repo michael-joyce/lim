@@ -16,8 +16,9 @@
             {% if is_granted('ROLE_CONTENT_ADMIN') %}
                 <a href="{{ path('location_new') }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus"></span> New </a>
+                <a href="{{ path('location_import') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-import"></span> Import </a>
             {% endif %}
-
             <a href="{{ path('location_search') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-search"></span> Search </a>
         </div>
