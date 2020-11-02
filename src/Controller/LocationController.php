@@ -21,7 +21,6 @@ use GeoNames\Client as GeoNamesClient;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -195,7 +194,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $location->setLongitude($data->lng);
             $location->setFclass($data->fcl);
             $location->setFcode($data->fcode);
-            if(isset($data->countryCode)) {
+            if (isset($data->countryCode)) {
                 $location->setCountry($data->countryCode);
             }
             $em->persist($location);
@@ -205,7 +204,6 @@ class LocationController extends AbstractController implements PaginatorAwareInt
 
         return $this->redirectToRoute('location_import', [$request->query->get('q')]);
     }
-
 
     /**
      * @Route("/{id}", name="location_show", methods={"GET"})

@@ -12,7 +12,6 @@ namespace App\Form;
 
 use App\Entity\Reference;
 use App\Entity\ReferenceRole;
-use App\Entity\Work;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
