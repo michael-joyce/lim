@@ -19,6 +19,7 @@ parameters:
     dhil.piwik_domain: ~
 
     nines.editor.upload_dir: public/images/blog
+    nines_user.sender: 'donotreply@%router.request_context.host%'
 
     page_size: 25
 
