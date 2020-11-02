@@ -45,6 +45,9 @@ class ContributionManager implements EventSubscriber {
         }
         /** @var User $user */
         $user = $this->security->getUser();
+        if ( ! $user) {
+            return;
+        }
         $entity->addContribution(new DateTime(), $user->getFullname());
     }
 

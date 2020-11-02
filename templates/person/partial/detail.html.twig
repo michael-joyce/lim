@@ -97,14 +97,14 @@
             <th>References</th>
             <td>
                 {% for reference in person.references %}
-                    {{ reference.work.citation|raw }}
+                    {{ reference.citation|raw }}
                 {% endfor %}
             </td>
         </tr>
         <tr>
             <th>Contributions</th>
             <td>
-                {% for contribution in work.contributions %}
+                {% for contribution in person.contributions %}
                     {{ contribution.date }} - {{ contribution.name }}<br/>
                 {% endfor %}
             </td>
