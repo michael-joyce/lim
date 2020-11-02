@@ -104,6 +104,9 @@ class Builder implements ContainerAwareInterface {
                 'role' => 'separator',
                 'class' => 'divider',
             ]);
+            $browse->addChild('Dates', [
+                'route' => 'circa_date_index',
+            ]);
             $browse->addChild('Links', [
                 'route' => 'link_index',
             ]);
