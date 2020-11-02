@@ -14,6 +14,8 @@ twig:
         - 'jquery.collection.html.twig'
     globals:
         text_service: '@Nines\UtilBundle\Services\Text'
+        link_manager: '@App\Service\LinkManager'
+        reference_manager: '@App\Service\ReferenceManager'
         piwik_enabled: '%dhil.piwik_enabled%'
         piwik_url: '%dhil.piwik_url%'
         piwik_siteid: '%dhil.piwik_siteid%'

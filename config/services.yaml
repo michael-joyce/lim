@@ -11,7 +11,7 @@ parameters:
     asset.request_context.base_path: '%env(string:ROUTE_BASE)%'
     asset.request_context.secure: auto
 
-    wphp.geonames.username: '%env(GEONAMES_USERNAME)%'
+    lim.geonames.username: '%env(GEONAMES_USERNAME)%'
 
     dhil.piwik_enabled: '%env(bool:PIWIK_ENABLED)%'
     dhil.piwik_url: //piwik.lib.sfu.ca/piwik/
@@ -19,8 +19,13 @@ parameters:
     dhil.piwik_domain: ~
 
     nines.editor.upload_dir: public/images/blog
+    nines_user.sender: 'donotreply@%router.request_context.host%'
 
     page_size: 25
+
+    app.routing:
+        App\Entity\Location: location_show
+        App\Entity\Work: work_show
 
 services:
     # default configuration for services in *this* file
@@ -44,3 +49,19 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
             - { name: knp_menu.menu_builder, method: footerMenu, alias: footer}
+
+    App\Service\ContributionManager:
+        tags:
+            - { name: 'doctrine.event_subscriber' }
+
+    App\Service\LinkManager:
+        arguments:
+            $routing: '%app.routing%'
+        tags:
+            - { name: 'doctrine.event_subscriber' }
+
+    App\Service\ReferenceManager:
+        arguments:
+            $routing: '%app.routing%'
+        tags:
+            - { name: 'doctrine.event_subscriber' }

@@ -1,0 +1,123 @@
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Full Name</th>
+            <td>
+                {{ person.fullName }}
+            </td>
+        </tr>
+        <tr>
+            <th>Sortable Name</th>
+            <td>
+                {{ person.sortableName }}
+            </td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>
+                {% include 'person/partial/gender.html.twig' with {'person': person} %}
+            </td>
+        </tr>
+        <tr>
+            <th>Biography</th>
+            <td>
+                {{ person.biography|raw }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Birth Year</th>
+            <td>
+                {{ person.birthYear }}
+            </td>
+        </tr>
+        <tr>
+            <th>Death Year</th>
+            <td>
+                {{ person.deathYear }}
+            </td>
+        </tr>
+        <tr>
+            <th>Birth Place</th>
+            <td>
+                {% if person.birthPlace %}
+                    <a href='{{ path("location_show", {"id": person.birthPlace.id}) }}'>{{ person.birthPlace }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Death Place</th>
+            <td>
+                {% if person.deathPlace %}
+                    <a href='{{ path("location_show", {"id": person.deathPlace.id}) }}'>{{ person.deathPlace }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Residences</th>
+            <td>
+                {% if person.homes|length > 0 %}
+                    <ul>
+                        {% for location in person.homes %}
+                            <li>
+                                <a href='{{ path("location_show", {"id":location.id }) }}'>
+                                    {{ location }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Occupation</th>
+            <td>
+                {% if person.occupations|length > 0 %}
+                    <ul>
+                        {% for occupation in person.occupations %}
+                            <li>
+                                <a href='{{ path("occupation_show", {"id":occupation.id }) }}'>
+                                    {{ occupation }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Links</th>
+            <td>
+                {% for link in person.links %}
+                    {{ link|raw }} <br />
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>References</th>
+            <td>
+                {% for reference in person.references %}
+                    {{ reference.work.citation|raw }}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contributions</th>
+            <td>
+                {% for contribution in work.contributions %}
+                    {{ contribution.date }} - {{ contribution.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ person.created|date }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ person.updated|date }}</td>
+        </tr>
+    </tbody>
+</table>
+
+

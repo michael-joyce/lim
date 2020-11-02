@@ -1,0 +1,34 @@
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Description</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for reference_role in reference_roles %}
+            <tr>
+                <td>
+                    <a href="{{ path('reference_role_show', { 'id': reference_role.id }) }}">
+                        {{ reference_role.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ reference_role.name }}
+                </td>
+
+                <td>
+                    {{ reference_role.label }}
+                </td>
+
+                <td>
+                    {{ reference_role.description|raw }}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -9,9 +9,9 @@ function getTinyMceConfig(editorUploadPath) {
         height: 320,
         menubar: 'edit insert view format tools',
 
-        toolbar: "undo redo | styleselect | paste | bold italic | alignleft "
-            + "aligncenter alignright alignjustify | "
-            + "bullist numlist outdent indent | link | code",
+        toolbar: 'undo redo | styleselect | paste | bold italic | alignleft '
+            + 'aligncenter alignright alignjustify | '
+            + 'bullist numlist outdent indent | link | code',
 
         image_caption: true,
         images_upload_url: editorUploadPath,
@@ -20,6 +20,12 @@ function getTinyMceConfig(editorUploadPath) {
         image_title: true,
 
         style_formats_merge: true,
+        cleanup: true,
+        remove_linebreaks: true,
+        convert_newlines_to_brs: false,
+        inline_styles : false,
+        entity_encoding: 'raw',
+        paste_auto_cleanup_on_paste: true
     };
 
 }
