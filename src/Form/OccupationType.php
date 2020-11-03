@@ -11,42 +11,19 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Occupation;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Occupation form.
  */
-class OccupationType extends AbstractType {
+class OccupationType extends TermType {
     /**
      * Add form fields to $builder.
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('name', TextType::class, [
-            'label' => 'Name',
-            'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
-        ]);
-        $builder->add('label', TextType::class, [
-            'label' => 'Label',
-            'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
-        ]);
-        $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
-            'required' => false,
-            'attr' => [
-                'help_block' => '',
-                'class' => 'tinymce',
-            ],
-        ]);
+        parent::buildForm($builder, $options);
     }
 
     /**
