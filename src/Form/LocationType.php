@@ -13,6 +13,7 @@ namespace App\Form;
 use App\Entity\Location;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,15 +43,21 @@ class LocationType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
-        $builder->add('latitude', null, [
+        $builder->add('latitude', NumberType::class, [
             'label' => 'Latitude',
+            'html5' => true,
+            'input' => 'number',
+            'scale' => 8,
             'required' => false,
             'attr' => [
                 'help_block' => '',
             ],
         ]);
-        $builder->add('longitude', null, [
+        $builder->add('longitude', NumberType::class, [
             'label' => 'Longitude',
+            'html5' => true,
+            'input' => 'number',
+            'scale' => 8,
             'required' => false,
             'attr' => [
                 'help_block' => '',

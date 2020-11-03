@@ -20,7 +20,7 @@ class LocationTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'location';
+    private const TYPEAHEAD_QUERY = 'Name ';
 
     protected function fixtures() : array {
         return [
@@ -159,6 +159,9 @@ class LocationTest extends ControllerBaseCase {
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @group search
+     */
     public function testUserSearch() : void {
         $repo = $this->createMock(LocationRepository::class);
         $repo->method('searchQuery')->willReturn([$this->getReference('location.1')]);
@@ -226,14 +229,13 @@ class LocationTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'location[name]' => 'Updated Name',
-            'location[geonameId]' => 'Updated GeonameId',
-            'location[latitude]' => 'Updated Latitude',
-            'location[longitude]' => 'Updated Longitude',
-            'location[fclass]' => 'Updated Fclass',
-            'location[fcode]' => 'Updated Fcode',
-            'location[country]' => 'Updated Country',
+            'location[geonameId]' => '123456',
+            'location[latitude]' => '12.23331',
+            'location[longitude]' => '13.321321',
+            'location[fclass]' => 'P',
+            'location[fcode]' => 'ABCD',
+            'location[country]' => 'PQ',
             'location[description]' => 'Updated Description',
-            'location[contributions]' => 'Updated Contributions',
         ]);
 
         $this->client->submit($form);
@@ -241,14 +243,11 @@ class LocationTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Name")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated GeonameId")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Latitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Longitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Fclass")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Fcode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Country")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("123456")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("12.23331")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("13.321321")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("PQ")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Contributions")')->count());
     }
 
     /**
@@ -302,14 +301,13 @@ class LocationTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'location[name]' => 'New Name',
-            'location[geonameId]' => 'New GeonameId',
-            'location[latitude]' => 'New Latitude',
-            'location[longitude]' => 'New Longitude',
-            'location[fclass]' => 'New Fclass',
-            'location[fcode]' => 'New Fcode',
-            'location[country]' => 'New Country',
+            'location[geonameId]' => '123456',
+            'location[latitude]' => '12.23331',
+            'location[longitude]' => '13.321321',
+            'location[fclass]' => 'P',
+            'location[fcode]' => 'ABCD',
+            'location[country]' => 'PQ',
             'location[description]' => 'New Description',
-            'location[contributions]' => 'New Contributions',
         ]);
 
         $this->client->submit($form);
@@ -317,14 +315,11 @@ class LocationTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Name")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New GeonameId")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Latitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Longitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Fclass")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Fcode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Country")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("123456")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("12.23331")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("13.321321")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("PQ")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Contributions")')->count());
     }
 
     /**
@@ -338,14 +333,13 @@ class LocationTest extends ControllerBaseCase {
 
         $form = $formCrawler->selectButton('Save')->form([
             'location[name]' => 'New Name',
-            'location[geonameId]' => 'New GeonameId',
-            'location[latitude]' => 'New Latitude',
-            'location[longitude]' => 'New Longitude',
-            'location[fclass]' => 'New Fclass',
-            'location[fcode]' => 'New Fcode',
-            'location[country]' => 'New Country',
+            'location[geonameId]' => '123456',
+            'location[latitude]' => '12.23331',
+            'location[longitude]' => '13.321321',
+            'location[fclass]' => 'P',
+            'location[fcode]' => 'ABCD',
+            'location[country]' => 'PQ',
             'location[description]' => 'New Description',
-            'location[contributions]' => 'New Contributions',
         ]);
 
         $this->client->submit($form);
@@ -353,14 +347,11 @@ class LocationTest extends ControllerBaseCase {
         $responseCrawler = $this->client->followRedirect();
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Name")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New GeonameId")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Latitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Longitude")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Fclass")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Fcode")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Country")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("123456")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("12.23331")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("13.321321")')->count());
+        $this->assertSame(1, $responseCrawler->filter('td:contains("PQ")')->count());
         $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Contributions")')->count());
     }
 
     /**

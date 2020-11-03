@@ -5,10 +5,10 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: true
 
-    test.app\Repository\CircaDateRepository: '@App\Repository\CircaDateRepository'
-    test.app\Repository\LinkRepository: '@App\Repository\LinkRepository'
-    test.app\Repository\LocationRepository: '@App\Repository\LocationRepository'
-    test.app\Repository\OccupationRepository: '@App\Repository\OccupationRepository'
-    test.app\Repository\PersonRepository: '@App\Repository\PersonRepository'
-    test.app\Repository\ReferenceRepository: '@App\Repository\ReferenceRepository'
-    test.app\Repository\ReferenceRoleRepository: '@App\Repository\ReferenceRoleRepository'
+    test.App\Repository\CircaDateRepository: '@App\Repository\CircaDateRepository'
+    test.App\Repository\LinkRepository: '@App\Repository\LinkRepository'
+    test.App\Repository\LocationRepository: '@App\Repository\LocationRepository'
+    test.App\Repository\OccupationRepository: '@App\Repository\OccupationRepository'
+    test.App\Repository\PersonRepository: '@App\Repository\PersonRepository'
+    test.App\Repository\ReferenceRepository: '@App\Repository\ReferenceRepository'
+    test.App\Repository\ReferenceRoleRepository: '@App\Repository\ReferenceRoleRepository'

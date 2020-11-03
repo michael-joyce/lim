@@ -235,7 +235,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $em->flush();
             $this->addFlash('success', 'The updated location has been saved.');
 
-//            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
+            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
         }
 
         return [
