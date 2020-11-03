@@ -20,8 +20,6 @@ class ReferenceTest extends ControllerBaseCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'reference';
-
     protected function fixtures() : array {
         return [
             ReferenceFixtures::class,
@@ -36,7 +34,6 @@ class ReferenceTest extends ControllerBaseCase {
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/reference/');
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
     /**
@@ -47,7 +44,6 @@ class ReferenceTest extends ControllerBaseCase {
         $this->login('user.user');
         $crawler = $this->client->request('GET', '/reference/');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
     /**
@@ -58,7 +54,6 @@ class ReferenceTest extends ControllerBaseCase {
         $this->login('user.admin');
         $crawler = $this->client->request('GET', '/reference/');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->selectLink('New')->count());
     }
 
     /**
@@ -68,7 +63,6 @@ class ReferenceTest extends ControllerBaseCase {
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/reference/1');
         $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
     /**
@@ -79,7 +73,6 @@ class ReferenceTest extends ControllerBaseCase {
         $this->login('user.user');
         $crawler = $this->client->request('GET', '/reference/1');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
     /**
@@ -90,52 +83,6 @@ class ReferenceTest extends ControllerBaseCase {
         $this->login('user.admin');
         $crawler = $this->client->request('GET', '/reference/1');
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->selectLink('Edit')->count());
-    }
-
-    /**
-     * @group anon
-     * @group typeahead
-     */
-    public function testAnonTypeahead() : void {
-        $this->client->request('GET', '/reference/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(self::ANON_RESPONSE_CODE, $this->client->getResponse()->getStatusCode());
-        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
-            // If authentication is required stop here.
-            return;
-        }
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertSame(4, count($json));
-    }
-
-    /**
-     * @group user
-     * @group typeahead
-     */
-    public function testUserTypeahead() : void {
-        $this->login('user.user');
-        $this->client->request('GET', '/reference/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertSame(4, count($json));
-    }
-
-    /**
-     * @group admin
-     * @group typeahead
-     */
-    public function testAdminTypeahead() : void {
-        $this->login('user.admin');
-        $this->client->request('GET', '/reference/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertSame(4, count($json));
     }
 
     public function testAnonSearch() : void {
@@ -195,158 +142,4 @@ class ReferenceTest extends ControllerBaseCase {
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @group anon
-     * @group edit
-     */
-    public function testAnonEdit() : void {
-        $crawler = $this->client->request('GET', '/reference/1/edit');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-    }
-
-    /**
-     * @group user
-     * @group edit
-     */
-    public function testUserEdit() : void {
-        $this->login('user.user');
-        $crawler = $this->client->request('GET', '/reference/1/edit');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @group admin
-     * @group edit
-     */
-    public function testAdminEdit() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/reference/1/edit');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'reference[entity]' => 'Updated Entity',
-            'reference[citation]' => 'Updated Citation',
-            'reference[description]' => 'Updated Description',
-        ]);
-
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect('/reference/1'));
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Entity")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Citation")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("Updated Description")')->count());
-    }
-
-    /**
-     * @group anon
-     * @group new
-     */
-    public function testAnonNew() : void {
-        $crawler = $this->client->request('GET', '/reference/new');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-    }
-
-    /**
-     * @group anon
-     * @group new
-     */
-    public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/reference/new_popup');
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-    }
-
-    /**
-     * @group user
-     * @group new
-     */
-    public function testUserNew() : void {
-        $this->login('user.user');
-        $crawler = $this->client->request('GET', '/reference/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @group user
-     * @group new
-     */
-    public function testUserNewPopup() : void {
-        $this->login('user.user');
-        $crawler = $this->client->request('GET', '/reference/new_popup');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * @group admin
-     * @group new
-     */
-    public function testAdminNew() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/reference/new');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'reference[entity]' => 'New Entity',
-            'reference[citation]' => 'New Citation',
-            'reference[description]' => 'New Description',
-        ]);
-
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Entity")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Citation")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-    }
-
-    /**
-     * @group admin
-     * @group new
-     */
-    public function testAdminNewPopup() : void {
-        $this->login('user.admin');
-        $formCrawler = $this->client->request('GET', '/reference/new_popup');
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'reference[entity]' => 'New Entity',
-            'reference[citation]' => 'New Citation',
-            'reference[description]' => 'New Description',
-        ]);
-
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Entity")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Citation")')->count());
-        $this->assertSame(1, $responseCrawler->filter('td:contains("New Description")')->count());
-    }
-
-    /**
-     * @group admin
-     * @group delete
-     */
-    public function testAdminDelete() : void {
-        $repo = self::$container->get(ReferenceRepository::class);
-        $preCount = count($repo->findAll());
-
-        $this->login('user.admin');
-        $crawler = $this->client->request('GET', '/reference/1');
-        $form = $crawler->selectButton('Delete')->form();
-        $this->client->submit($form);
-
-        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-
-        $this->entityManager->clear();
-        $postCount = count($repo->findAll());
-        $this->assertSame($preCount - 1, $postCount);
-    }
 }

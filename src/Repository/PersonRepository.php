@@ -50,4 +50,19 @@ class PersonRepository extends ServiceEntityRepository {
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * @param string $q
+     *
+     * @return Query
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('person');
+        $qb->addSelect('MATCH (person.fullName, person.biography) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
+    }
 }

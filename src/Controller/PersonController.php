@@ -126,8 +126,8 @@ class PersonController extends AbstractController implements PaginatorAwareInter
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
+        return $this->new($request, $linkManager, $referenceManager);
     }
 
     /**

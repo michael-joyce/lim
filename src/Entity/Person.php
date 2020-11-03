@@ -19,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(indexes={
- * @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ *   @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ *   @ORM\Index(name="person_search_idx", columns={"full_name", "biography"}, flags={"fulltext"})
  * })
  */
 class Person extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {

@@ -35,4 +35,19 @@ class ReferenceRepository extends ServiceEntityRepository {
             ->getQuery()
         ;
     }
+
+    /**
+     * @param string $q
+     *
+     * @return Query
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('reference');
+        $qb->addSelect('MATCH (reference.citation, reference.description) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
+    }
 }
