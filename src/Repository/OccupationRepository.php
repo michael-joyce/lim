@@ -29,27 +29,4 @@ class OccupationRepository extends TermRepository {
         parent::__construct($registry, Occupation::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
-        return $this->createQueryBuilder('occupation')
-            ->orderBy('occupation.id')
-            ->getQuery()
-        ;
-    }
-
-    /**
-     * @param string $q
-     *
-     * @return Collection|Occupation[]
-     */
-    public function typeaheadQuery($q) {
-        $qb = $this->createQueryBuilder('occupation');
-        $qb->andWhere('occupation.label LIKE :q');
-        $qb->orderBy('occupation.label', 'ASC');
-        $qb->setParameter('q', "{$q}%");
-
-        return $qb->getQuery()->execute();
-    }
 }
