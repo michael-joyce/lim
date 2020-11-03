@@ -32,10 +32,7 @@ class LocationRepository extends ServiceEntityRepository {
      * @return Query
      */
     public function indexQuery() {
-        return $this->createQueryBuilder('location')
-            ->orderBy('location.id')
-            ->getQuery()
-        ;
+        return $this->createQueryBuilder('location')->orderBy('location.id')->getQuery();
     }
 
     /**
@@ -44,12 +41,26 @@ class LocationRepository extends ServiceEntityRepository {
      * @return Collection|Location[]
      */
     public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('location');
-        $qb->andWhere('location.column LIKE :q');
-        $qb->orderBy('location.column', 'ASC');
+        $qb->andWhere('location.name LIKE :q');
+        $qb->orderBy('location.name', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param string $q
+     *
+     * @return Query
+     */
+    public function searchQuery($q) {
+        $qb = $this->createQueryBuilder('location');
+        $qb->addSelect('MATCH (location.name) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
     }
 }

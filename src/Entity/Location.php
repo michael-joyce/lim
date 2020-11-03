@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
+ * @ORM\Table(indexes={
+ *  @ORM\Index(columns={"name"}, flags={"fulltext"}),
+ * })
  */
 class Location extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
     use ContributorTrait {

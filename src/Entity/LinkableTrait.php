@@ -29,6 +29,9 @@ trait LinkableTrait {
 
     public function setLinks($links) {
         $this->links = new ArrayCollection();
+        if( ! $links) {
+            return $this;
+        }
         foreach ($links as $link) {
             $this->addLink($link);
         }
