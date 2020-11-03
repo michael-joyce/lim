@@ -15,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Nines\UtilBundle\Repository\TermRepository;
 use RuntimeException;
 
 /**
@@ -23,7 +24,7 @@ use RuntimeException;
  * @method Occupation[]    findAll()
  * @method Occupation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OccupationRepository extends ServiceEntityRepository {
+class OccupationRepository extends TermRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Occupation::class);
     }
@@ -44,10 +45,9 @@ class OccupationRepository extends ServiceEntityRepository {
      * @return Collection|Occupation[]
      */
     public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('occupation');
-        $qb->andWhere('occupation.column LIKE :q');
-        $qb->orderBy('occupation.column', 'ASC');
+        $qb->andWhere('occupation.label LIKE :q');
+        $qb->orderBy('occupation.label', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery()->execute();
