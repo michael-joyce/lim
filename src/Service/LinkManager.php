@@ -15,6 +15,7 @@ use App\Entity\LinkableInterface;
 use App\Repository\LinkRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -111,7 +112,9 @@ class LinkManager implements EventSubscriber {
      */
     public function findEntity(Link $link) {
         [$class, $id] = explode(':', $link->getEntity());
-
+        if($this->em->getMetadataFactory()->isTransient($class)) {
+            return null;
+        }
         return $this->em->getRepository($class)->find($id);
     }
 
@@ -143,41 +146,23 @@ class LinkManager implements EventSubscriber {
      * @return Collection|Link[]
      */
     public function findLinks($entity) {
-        $class = get_class($entity);
-
+        $class = ClassUtils::getClass($entity);
         return $this->linkRepository->findBy([
             'entity' => $class . ':' . $entity->getId(),
         ]);
     }
 
-    /**
-     * Add a link to an entity.
-     *
-     * @param mixed $entity
-     *
-     * @throws Exception
-     *
-     * @return Link
-     */
-    public function addLink(LinkableInterface $entity, Link $link) {
-        $link->setEntity($entity);
-        $this->em->persist($link);
-
-        return $link;
-    }
-
     public function setLinks(LinkableInterface $entity, $links) : void {
         foreach ($entity->getLinks() as $link) {
-            $this->em->remove($link);
+            if($this->em->contains($link)) {
+                $this->em->remove($link);
+            }
         }
-        foreach ($links as $link) {
-            $entity->addLink($link);
-            $this->em->persist($link);
-        }
+        $entity->setLinks($links);
     }
 
-    public function linkToEntity($citation) {
-        [$class, $id] = explode(':', $citation->getEntity());
+    public function linkToEntity($link) {
+        [$class, $id] = explode(':', $link->getEntity());
 
         return $this->router->generate($this->routing[$class], ['id' => $id]);
     }
