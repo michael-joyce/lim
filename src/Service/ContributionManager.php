@@ -39,7 +39,7 @@ class ContributionManager implements EventSubscriber {
      */
     private $security;
 
-    private function addContributor($entity) : void {
+    public function addContributor($entity) : void {
         if ( ! $entity instanceof ContributorInterface) {
             return;
         }

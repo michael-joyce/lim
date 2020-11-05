@@ -12,4 +12,5 @@ services:
     test.App\Repository\PersonRepository: '@App\Repository\PersonRepository'
     test.App\Repository\ReferenceRepository: '@App\Repository\ReferenceRepository'
     test.App\Repository\ReferenceRoleRepository: '@App\Repository\ReferenceRoleRepository'
+    test.App\Service\ContributionManager: '@App\Service\ContributionManager'
     test.App\Service\LinkManager: '@App\Service\LinkManager'

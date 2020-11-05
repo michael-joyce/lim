@@ -19,7 +19,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Exception;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
@@ -112,9 +111,10 @@ class LinkManager implements EventSubscriber {
      */
     public function findEntity(Link $link) {
         [$class, $id] = explode(':', $link->getEntity());
-        if($this->em->getMetadataFactory()->isTransient($class)) {
-            return null;
+        if ($this->em->getMetadataFactory()->isTransient($class)) {
+            return;
         }
+
         return $this->em->getRepository($class)->find($id);
     }
 
@@ -147,6 +147,7 @@ class LinkManager implements EventSubscriber {
      */
     public function findLinks($entity) {
         $class = ClassUtils::getClass($entity);
+
         return $this->linkRepository->findBy([
             'entity' => $class . ':' . $entity->getId(),
         ]);
@@ -154,7 +155,7 @@ class LinkManager implements EventSubscriber {
 
     public function setLinks(LinkableInterface $entity, $links) : void {
         foreach ($entity->getLinks() as $link) {
-            if($this->em->contains($link)) {
+            if ($this->em->contains($link)) {
                 $this->em->remove($link);
             }
         }
