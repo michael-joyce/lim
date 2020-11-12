@@ -190,8 +190,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $location->setGeonameid($data->geonameId);
             $location->setName($data->name);
             $alternateNames = [];
-            $location->setLatitude($data->lat);
-            $location->setLongitude($data->lng);
+            $location->setLatitude((float)$data->lat);
+            $location->setLongitude((float)$data->lng);
             $location->setFclass($data->fcl);
             $location->setFcode($data->fcode);
             if (isset($data->countryCode)) {
