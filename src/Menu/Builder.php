@@ -89,6 +89,9 @@ class Builder implements ContainerAwareInterface {
             $browse->addChild('Reference Roles', [
                 'route' => 'reference_role_index',
             ]);
+            $browse->addChild('References', [
+                'route' => 'reference_index',
+            ]);
         }
 
         if ($this->hasRole('ROLE_ADMIN')) {
@@ -104,9 +107,6 @@ class Builder implements ContainerAwareInterface {
             ]);
             $browse->addChild('Links', [
                 'route' => 'link_index',
-            ]);
-            $browse->addChild('References', [
-                'route' => 'reference_index',
             ]);
         }
 

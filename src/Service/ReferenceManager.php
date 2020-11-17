@@ -169,7 +169,7 @@ class ReferenceManager implements EventSubscriber {
         }
     }
 
-    public function referenceToEntity($citation) {
+    public function linkToEntity($citation) {
         list($class, $id) = explode(':', $citation->getEntity());
 
         return $this->router->generate($this->routing[$class], ['id' => $id]);
