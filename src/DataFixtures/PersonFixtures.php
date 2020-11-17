@@ -27,6 +27,8 @@ class PersonFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setSortableName('SortableName ' . $i);
             $fixture->setGender((0 === $i % 2) ? Person::FEMALE : Person::MALE);
             $fixture->setBiography("<p>This is paragraph {$i}</p>");
+            $fixture->addOccupation('Occupation ' . $i, null);
+            $fixture->addTitle('Title ' . $i, null);
             $fixture->addContribution(new DateTimeImmutable('2020-01-01'), 'Test User');
             $fixture->setBirthyear($this->getReference('circadate.' . $i));
             $fixture->setDeathyear($this->getReference('circadate.' . $i));

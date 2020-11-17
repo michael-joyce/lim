@@ -61,6 +61,24 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
     private $gender;
 
     /**
+     * List of titles held by a person and the date range for the title.
+     * [['dates' => '1700-1787', 'title' => 'Laird of Somewhere']]
+     *
+     * @var array
+     * @ORM\Column(type="json")
+     */
+    private $titles;
+
+    /**
+     * List of occupations held by a person and the date range.
+     * [['dates' => '1700-1787', 'title' => 'Gentleman farmer']]
+     *
+     * @var array
+     * @ORM\Column(type="json")
+     */
+    private $occupations;
+
+    /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
@@ -102,6 +120,8 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
         $this->link_constructor();
         $this->reference_constructor();
         $this->homes = new ArrayCollection();
+        $this->occupations = [];
+        $this->titles = [];
     }
 
     /**
@@ -220,5 +240,31 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
         }
 
         return $this;
+    }
+
+    public function addOccupation($name, $date) {
+        $this->occupations[] = ['name' => $name, 'date' => $date];
+        return $this;
+    }
+
+    public function getOccupations() {
+        return $this->occupations;
+    }
+
+    public function setOccupations($occupations) {
+        $this->occupations = $occupations;
+    }
+
+    public function addTitle($name, $date) {
+        $this->titles[] = ['name' => $name, 'date' => $date];
+        return $this;
+    }
+
+    public function getTitles() {
+        return $this->titles;
+    }
+
+    public function setTitles($titles) {
+        $this->titles = $titles;
     }
 }

@@ -56,6 +56,40 @@ class PersonType extends AbstractType {
                 'help_block' => '',
             ],
         ]);
+        $builder->add('titles', CollectionType::class, [
+            'label' => 'Titles',
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => TitleType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+            'by_reference' => false,
+            'attr' => [
+                'class' => 'collection collection-complex',
+                'help_block' => '',
+            ],
+            'data' => $person->getTitles(),
+        ]);
+        $builder->add('occupations', CollectionType::class, [
+            'label' => 'Occupations',
+            'required' => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'delete_empty' => true,
+            'entry_type' => OccupationType::class,
+            'entry_options' => [
+                'label' => false,
+            ],
+            'by_reference' => false,
+            'attr' => [
+                'class' => 'collection collection-complex',
+                'help_block' => '',
+            ],
+            'data' => $person->getOccupations(),
+        ]);
         $builder->add('biography', TextareaType::class, [
             'label' => 'Biography',
             'required' => false,

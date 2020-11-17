@@ -19,6 +19,22 @@
             </td>
         </tr>
         <tr>
+            <th>Titles</th>
+            <td>
+                {% for title in person.titles %}
+                    {{ title.name }} {{ title.date }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Occupations</th>
+            <td>
+                {% for occupation in person.occupations %}
+                    {{ occupation.name }} {{ occupation.date }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>Biography</th>
             <td>
                 {{ person.biography|raw }}
