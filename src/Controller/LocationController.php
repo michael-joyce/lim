@@ -21,7 +21,6 @@ use GeoNames\Client as GeoNamesClient;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,7 +37,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     /**
      * @Route("/", name="location_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, LocationRepository $locationRepository) : array {
         $query = $locationRepository->indexQuery();
@@ -53,11 +52,9 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     /**
      * @Route("/search", name="location_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function search(Request $request, LocationRepository $locationRepository) {
+    public function search(Request $request, LocationRepository $locationRepository) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $locationRepository->searchQuery($q);
@@ -74,15 +71,14 @@ class LocationController extends AbstractController implements PaginatorAwareInt
 
     /**
      * @Route("/typeahead", name="location_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
      */
-    public function typeahead(Request $request, LocationRepository $locationRepository) {
+    public function typeahead(Request $request, LocationRepository $locationRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
         }
         $data = [];
+
         foreach ($locationRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -94,8 +90,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     }
 
     /**
-     * @Route("/new", name="location_new", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new", name="location_new", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -125,8 +121,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     }
 
     /**
-     * @Route("/new_popup", name="location_new_popup", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new_popup", name="location_new_popup", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -142,10 +138,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
      * @Route("/import", name="location_import", methods={"GET"})
      *
      * @Template
-     *
-     * @return array
      */
-    public function importSearchAction(Request $request) {
+    public function importSearchAction(Request $request) : array {
         $q = $request->query->get('q');
         $results = [];
         if ($q) {
@@ -169,14 +163,14 @@ class LocationController extends AbstractController implements PaginatorAwareInt
      *
      * @throws Exception
      *
-     * @return RedirectResponse
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/import", name="location_import_save", methods={"POST"})
      */
-    public function importSaveAction(Request $request, EntityManagerInterface $em) {
+    public function importSaveAction(Request $request, EntityManagerInterface $em) : RedirectResponse {
         $user = $this->getParameter('lim.geonames.username');
         $client = new GeoNamesClient($user);
         $repo = $em->getRepository(Location::class);
+
         foreach ($request->request->get('geonameid') as $geonameid) {
             $data = $client->get([
                 'geonameId' => $geonameid,
@@ -191,11 +185,11 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $location->setGeonameid($data->geonameId);
             $location->setName($data->name);
             $alternateNames = [];
-            $location->setLatitude($data->lat);
-            $location->setLongitude($data->lng);
+            $location->setLatitude((float) $data->lat);
+            $location->setLongitude((float) $data->lng);
             $location->setFclass($data->fcl);
             $location->setFcode($data->fcode);
-            if(isset($data->countryCode)) {
+            if (isset($data->countryCode)) {
                 $location->setCountry($data->countryCode);
             }
             $em->persist($location);
@@ -206,14 +200,11 @@ class LocationController extends AbstractController implements PaginatorAwareInt
         return $this->redirectToRoute('location_import', [$request->query->get('q')]);
     }
 
-
     /**
      * @Route("/{id}", name="location_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(Location $location) {
+    public function show(Location $location) : array {
         return [
             'location' => $location,
         ];
@@ -221,9 +212,9 @@ class LocationController extends AbstractController implements PaginatorAwareInt
 
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="location_edit", methods={"GET", "POST"})
      *
-     * @Template()
+     * @Template
      *
      * @return array|RedirectResponse
      */
@@ -237,7 +228,7 @@ class LocationController extends AbstractController implements PaginatorAwareInt
             $em->flush();
             $this->addFlash('success', 'The updated location has been saved.');
 
-//            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
+            return $this->redirectToRoute('location_show', ['id' => $location->getId()]);
         }
 
         return [
@@ -249,10 +240,8 @@ class LocationController extends AbstractController implements PaginatorAwareInt
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}", name="location_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
      */
-    public function delete(Request $request, Location $location) {
+    public function delete(Request $request, Location $location) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($location);

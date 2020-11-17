@@ -34,7 +34,7 @@ class PersonController extends AbstractController implements PaginatorAwareInter
     /**
      * @Route("/", name="person_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, PersonRepository $personRepository) : array {
         $query = $personRepository->indexQuery();
@@ -49,11 +49,9 @@ class PersonController extends AbstractController implements PaginatorAwareInter
     /**
      * @Route("/search", name="person_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function search(Request $request, PersonRepository $personRepository) {
+    public function search(Request $request, PersonRepository $personRepository) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $personRepository->searchQuery($q);
@@ -70,15 +68,14 @@ class PersonController extends AbstractController implements PaginatorAwareInter
 
     /**
      * @Route("/typeahead", name="person_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
      */
-    public function typeahead(Request $request, PersonRepository $personRepository) {
+    public function typeahead(Request $request, PersonRepository $personRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
         }
         $data = [];
+
         foreach ($personRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -90,8 +87,8 @@ class PersonController extends AbstractController implements PaginatorAwareInter
     }
 
     /**
-     * @Route("/new", name="person_new", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new", name="person_new", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -120,23 +117,21 @@ class PersonController extends AbstractController implements PaginatorAwareInter
     }
 
     /**
-     * @Route("/new_popup", name="person_new_popup", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new_popup", name="person_new_popup", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
      */
-    public function new_popup(Request $request) {
-        return $this->new($request);
+    public function new_popup(Request $request, LinkManager $linkManager, ReferenceManager $referenceManager) {
+        return $this->new($request, $linkManager, $referenceManager);
     }
 
     /**
      * @Route("/{id}", name="person_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(Person $person) {
+    public function show(Person $person) : array {
         return [
             'person' => $person,
         ];
@@ -144,9 +139,9 @@ class PersonController extends AbstractController implements PaginatorAwareInter
 
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="person_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="person_edit", methods={"GET", "POST"})
      *
-     * @Template()
+     * @Template
      *
      * @return array|RedirectResponse
      */
@@ -172,10 +167,8 @@ class PersonController extends AbstractController implements PaginatorAwareInter
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}", name="person_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
      */
-    public function delete(Request $request, Person $person) {
+    public function delete(Request $request, Person $person) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $person->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($person);

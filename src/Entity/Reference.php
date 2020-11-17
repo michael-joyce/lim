@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ReferenceRepository;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Nines\UtilBundle\Entity\AbstractEntity;
@@ -18,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=ReferenceRepository::class)
  * @ORM\Table(indexes={
- *  @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"citation", "description"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"entity"})
  * })
  */
 class Reference extends AbstractEntity {
@@ -61,7 +63,7 @@ class Reference extends AbstractEntity {
         if ( ! $entity->getId()) {
             throw new Exception('Reference entities must be persisted.');
         }
-        $this->entity = get_class($entity) . ':' . $entity->getId();
+        $this->entity = ClassUtils::getClass($entity) . ':' . $entity->getId();
     }
 
     public function getEntity() : ?string {
@@ -84,6 +86,16 @@ class Reference extends AbstractEntity {
 
     public function setReferenceRole(?ReferenceRole $referenceRole) : self {
         $this->referenceRole = $referenceRole;
+
+        return $this;
+    }
+
+    public function getCitation() : ?string {
+        return $this->citation;
+    }
+
+    public function setCitation(string $citation) : self {
+        $this->citation = $citation;
 
         return $this;
     }

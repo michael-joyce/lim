@@ -13,7 +13,6 @@ namespace App\Repository;
 use App\Entity\CircaDate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
 
@@ -28,9 +27,6 @@ class CircaDateRepository extends ServiceEntityRepository {
         parent::__construct($registry, CircaDate::class);
     }
 
-    /**
-     * @return Query
-     */
     public function indexQuery() {
         return $this->createQueryBuilder('circaDate')
             ->orderBy('circaDate.id')
@@ -39,11 +35,9 @@ class CircaDateRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param string $q
-     *
      * @return CircaDate[]|Collection
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('circaDate');
         $qb->andWhere('circaDate.column LIKE :q');

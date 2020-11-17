@@ -19,6 +19,22 @@
             </td>
         </tr>
         <tr>
+            <th>Titles</th>
+            <td>
+                {% for title in person.titles %}
+                    {{ title.name }} {{ title.date }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Occupations</th>
+            <td>
+                {% for occupation in person.occupations %}
+                    {{ occupation.name }} {{ occupation.date }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <th>Biography</th>
             <td>
                 {{ person.biography|raw }}
@@ -70,22 +86,6 @@
             </td>
         </tr>
         <tr>
-            <th>Occupation</th>
-            <td>
-                {% if person.occupations|length > 0 %}
-                    <ul>
-                        {% for occupation in person.occupations %}
-                            <li>
-                                <a href='{{ path("occupation_show", {"id":occupation.id }) }}'>
-                                    {{ occupation }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Links</th>
             <td>
                 {% for link in person.links %}
@@ -97,14 +97,14 @@
             <th>References</th>
             <td>
                 {% for reference in person.references %}
-                    {{ reference.work.citation|raw }}
+                    {{ reference.citation|raw }}
                 {% endfor %}
             </td>
         </tr>
         <tr>
             <th>Contributions</th>
             <td>
-                {% for contribution in work.contributions %}
+                {% for contribution in person.contributions %}
                     {{ contribution.date }} - {{ contribution.name }}<br/>
                 {% endfor %}
             </td>

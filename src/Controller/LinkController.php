@@ -28,7 +28,7 @@ class LinkController extends AbstractController implements PaginatorAwareInterfa
     /**
      * @Route("/", name="link_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, LinkRepository $linkRepository) : array {
         $query = $linkRepository->indexQuery();
@@ -43,11 +43,9 @@ class LinkController extends AbstractController implements PaginatorAwareInterfa
     /**
      * @Route("/search", name="link_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function search(Request $request, LinkRepository $linkRepository) {
+    public function search(Request $request, LinkRepository $linkRepository) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $linkRepository->searchQuery($q);
@@ -64,11 +62,9 @@ class LinkController extends AbstractController implements PaginatorAwareInterfa
 
     /**
      * @Route("/{id}", name="link_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(Link $link) {
+    public function show(Link $link) : array {
         return [
             'link' => $link,
         ];

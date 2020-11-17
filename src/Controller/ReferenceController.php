@@ -28,7 +28,7 @@ class ReferenceController extends AbstractController implements PaginatorAwareIn
     /**
      * @Route("/", name="reference_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, ReferenceRepository $referenceRepository) : array {
         $query = $referenceRepository->indexQuery();
@@ -43,11 +43,9 @@ class ReferenceController extends AbstractController implements PaginatorAwareIn
     /**
      * @Route("/search", name="reference_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function search(Request $request, ReferenceRepository $referenceRepository) {
+    public function search(Request $request, ReferenceRepository $referenceRepository) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $referenceRepository->searchQuery($q);
@@ -64,11 +62,9 @@ class ReferenceController extends AbstractController implements PaginatorAwareIn
 
     /**
      * @Route("/{id}", name="reference_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(Reference $reference) {
+    public function show(Reference $reference) : array {
         return [
             'reference' => $reference,
         ];

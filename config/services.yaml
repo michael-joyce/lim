@@ -25,7 +25,8 @@ parameters:
 
     app.routing:
         App\Entity\Location: location_show
-        App\Entity\Work: work_show
+        App\Entity\Person: person_show
+        App\Entity\Referece: reference_show
 
 services:
     # default configuration for services in *this* file

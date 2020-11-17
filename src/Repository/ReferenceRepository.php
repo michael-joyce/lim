@@ -12,7 +12,6 @@ namespace App\Repository;
 
 use App\Entity\Reference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,13 +25,20 @@ class ReferenceRepository extends ServiceEntityRepository {
         parent::__construct($registry, Reference::class);
     }
 
-    /**
-     * @return Query
-     */
     public function indexQuery() {
         return $this->createQueryBuilder('reference')
             ->orderBy('reference.id')
             ->getQuery()
         ;
+    }
+
+    public function searchQuery(string $q) {
+        $qb = $this->createQueryBuilder('reference');
+        $qb->addSelect('MATCH (reference.citation, reference.description) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
     }
 }

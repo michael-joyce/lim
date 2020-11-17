@@ -29,6 +29,10 @@ trait ReferenceableTrait {
 
     public function setReferences($references) {
         $this->references = new ArrayCollection();
+        if ( ! $references) {
+            return $this;
+        }
+
         foreach ($references as $reference) {
             $this->addReference($reference);
         }

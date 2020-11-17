@@ -13,9 +13,7 @@ namespace App\Repository;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Location find($id, $lockMode = null, $lockVersion = null)
@@ -28,28 +26,29 @@ class LocationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Location::class);
     }
 
-    /**
-     * @return Query
-     */
     public function indexQuery() {
-        return $this->createQueryBuilder('location')
-            ->orderBy('location.id')
-            ->getQuery()
-        ;
+        return $this->createQueryBuilder('location')->orderBy('location.id')->getQuery();
     }
 
     /**
-     * @param string $q
-     *
      * @return Collection|Location[]
      */
-    public function typeaheadQuery($q) {
-        throw new RuntimeException('Not implemented yet.');
+    public function typeaheadQuery(string $q) {
         $qb = $this->createQueryBuilder('location');
-        $qb->andWhere('location.column LIKE :q');
-        $qb->orderBy('location.column', 'ASC');
+        $qb->andWhere('location.name LIKE :q');
+        $qb->orderBy('location.name', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery()->execute();
+    }
+
+    public function searchQuery(string $q) {
+        $qb = $this->createQueryBuilder('location');
+        $qb->addSelect('MATCH (location.name) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
     }
 }

@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Occupation;
+use App\Entity\CircaDate;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Occupation form.
+ * CircaDate form.
  */
 class OccupationType extends AbstractType {
     /**
@@ -26,25 +26,17 @@ class OccupationType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('name', TextType::class, [
-            'label' => 'Name',
+            'label' => 'Occupation',
             'required' => true,
             'attr' => [
                 'help_block' => '',
             ],
         ]);
-        $builder->add('label', TextType::class, [
-            'label' => 'Label',
-            'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
-        ]);
-        $builder->add('description', TextareaType::class, [
-            'label' => 'Description',
+        $builder->add('date', null, [
+            'label' => 'Date range',
             'required' => false,
             'attr' => [
-                'help_block' => '',
-                'class' => 'tinymce',
+                'help_block' => 'Ranges and partial ranges are supported.',
             ],
         ]);
     }
@@ -56,8 +48,5 @@ class OccupationType extends AbstractType {
      * buildForm() method via the $options parameter.
      */
     public function configureOptions(OptionsResolver $resolver) : void {
-        $resolver->setDefaults([
-            'data_class' => Occupation::class,
-        ]);
     }
 }

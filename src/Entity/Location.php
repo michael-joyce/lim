@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"name"}, flags={"fulltext"}),
+ * })
  */
 class Location extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
     use ContributorTrait {
@@ -45,14 +48,14 @@ class Location extends AbstractEntity implements ContributorInterface, LinkableI
     private $geonameId;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="latitude", type="decimal", precision=10, scale=7, nullable=true)
      */
     private $latitude;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="longitude", type="decimal", precision=10, scale=7, nullable=true)
      */
@@ -140,21 +143,29 @@ class Location extends AbstractEntity implements ContributorInterface, LinkableI
         return $this;
     }
 
-    public function getLatitude() : ?string {
-        return $this->latitude;
+    public function getLatitude() : ?float {
+        if (null !== $this->latitude) {
+            return (float) $this->latitude;
+        }
+
+        return null;
     }
 
-    public function setLatitude(?string $latitude) : self {
+    public function setLatitude(?float $latitude) : self {
         $this->latitude = $latitude;
 
         return $this;
     }
 
-    public function getLongitude() : ?string {
-        return $this->longitude;
+    public function getLongitude() : ?float {
+        if (null !== $this->longitude) {
+            return (float) $this->longitude;
+        }
+
+        return null;
     }
 
-    public function setLongitude(?string $longitude) : self {
+    public function setLongitude(?float $longitude) : self {
         $this->longitude = $longitude;
 
         return $this;

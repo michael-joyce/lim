@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\ContributorInterface;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -39,13 +39,16 @@ class ContributionManager implements EventSubscriber {
      */
     private $security;
 
-    private function addContributor($entity) : void {
+    public function addContributor($entity) : void {
         if ( ! $entity instanceof ContributorInterface) {
             return;
         }
         /** @var User $user */
         $user = $this->security->getUser();
-        $entity->addContribution(new DateTime(), $user->getFullname());
+        if ( ! $user) {
+            return;
+        }
+        $entity->addContribution(new DateTimeImmutable(), $user->getFullname());
     }
 
     /**

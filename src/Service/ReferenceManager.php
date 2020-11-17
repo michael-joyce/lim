@@ -58,10 +58,8 @@ class ReferenceManager implements EventSubscriber {
 
     /**
      * Build the commenting service.
-     *
-     * @param array $routing
      */
-    public function __construct($routing) {
+    public function __construct(array $routing) {
         $this->routing = $routing;
     }
 
@@ -95,12 +93,8 @@ class ReferenceManager implements EventSubscriber {
 
     /**
      * Check if an entity is configured to accept references.
-     *
-     * @param AbstractEntity $entity
-     *
-     * @return bool
      */
-    public function acceptsReferences($entity) {
+    public function acceptsReferences(AbstractEntity $entity) : bool {
         return $entity instanceof ReferenceableInterface;
     }
 
@@ -110,7 +104,7 @@ class ReferenceManager implements EventSubscriber {
      * @return mixed
      */
     public function findEntity(Reference $reference) {
-        [$class, $id] = explode(':', $reference->getEntity());
+        list($class, $id) = explode(':', $reference->getEntity());
 
         return $this->em->getRepository($class)->find($id);
     }
@@ -156,10 +150,8 @@ class ReferenceManager implements EventSubscriber {
      * @param mixed $entity
      *
      * @throws Exception
-     *
-     * @return Reference
      */
-    public function addReference(ReferenceableInterface $entity, Reference $reference) {
+    public function addReference(ReferenceableInterface $entity, Reference $reference) : Reference {
         $reference->setEntity($entity);
         $this->em->persist($reference);
 
@@ -170,14 +162,15 @@ class ReferenceManager implements EventSubscriber {
         foreach ($entity->getReferences() as $reference) {
             $this->em->remove($reference);
         }
+
         foreach ($references as $reference) {
             $entity->addReference($reference);
             $this->em->persist($reference);
         }
     }
 
-    public function referenceToEntity($citation) {
-        [$class, $id] = explode(':', $citation->getEntity());
+    public function linkToEntity($citation) {
+        list($class, $id) = explode(':', $citation->getEntity());
 
         return $this->router->generate($this->routing[$class], ['id' => $id]);
     }
@@ -202,6 +195,7 @@ class ReferenceManager implements EventSubscriber {
         if ( ! $entity instanceof ReferenceableInterface) {
             return;
         }
+
         foreach ($entity->getReferences() as $reference) {
             $this->em->remove($reference);
         }

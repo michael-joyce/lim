@@ -1,15 +1,15 @@
 # define the hosts
 dhil.lib.sfu.ca:
      stage: dhil
-     become: lim
-     deploy_path: /var/www/lim
-     user: mjoyce
+     become: ~
+     deploy_path: ~
+     user: ~
 
 # The settings key must start with a dot(.) to prevent it being treated as
 # a host in the inventory.
 .settings:
     application: lim
-    repository: https://github.com/ubermichael/lim.git
+    repository: https://github.com/sfu-dhil/lim.git
     branch: main
     shared_files:
         - .env.local
@@ -21,7 +21,7 @@ dhil.lib.sfu.ca:
         - var/log
         - var/sessions
         - var/cache
-        - ../../shared/public/images/blog
+        - public/images/blog
     composer_options: 'install --no-progress --optimize-autoloader --no-interaction'
     site_path: /lim
     context: system_u:object_r:httpd_sys_rw_content_t:s0

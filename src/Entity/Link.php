@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Nines\UtilBundle\Entity\AbstractEntity;
@@ -18,8 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  * @ORM\Table(indexes={
- *  @ORM\Index(columns={"url","text"}, flags={"fulltext"}),
- *  @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"url", "text"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"entity"})
  * })
  */
 class Link extends AbstractEntity {
@@ -58,7 +59,7 @@ class Link extends AbstractEntity {
         if ( ! $entity->getId()) {
             throw new Exception('Link entities must be persisted.');
         }
-        $this->entity = get_class($entity) . ':' . $entity->getId();
+        $this->entity = ClassUtils::getClass($entity) . ':' . $entity->getId();
     }
 
     public function getUrl() : ?string {

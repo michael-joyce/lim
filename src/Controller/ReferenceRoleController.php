@@ -32,7 +32,7 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
     /**
      * @Route("/", name="reference_role_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, ReferenceRoleRepository $referenceRoleRepository) : array {
         $query = $referenceRoleRepository->indexQuery();
@@ -47,11 +47,9 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
     /**
      * @Route("/search", name="reference_role_search", methods={"GET"})
      *
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function search(Request $request, ReferenceRoleRepository $referenceRoleRepository) {
+    public function search(Request $request, ReferenceRoleRepository $referenceRoleRepository) : array {
         $q = $request->query->get('q');
         if ($q) {
             $query = $referenceRoleRepository->searchQuery($q);
@@ -68,15 +66,14 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
 
     /**
      * @Route("/typeahead", name="reference_role_typeahead", methods={"GET"})
-     *
-     * @return JsonResponse
      */
-    public function typeahead(Request $request, ReferenceRoleRepository $referenceRoleRepository) {
+    public function typeahead(Request $request, ReferenceRoleRepository $referenceRoleRepository) : JsonResponse {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
         }
         $data = [];
+
         foreach ($referenceRoleRepository->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -88,8 +85,8 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
     }
 
     /**
-     * @Route("/new", name="reference_role_new", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new", name="reference_role_new", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -115,8 +112,8 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
     }
 
     /**
-     * @Route("/new_popup", name="reference_role_new_popup", methods={"GET","POST"})
-     * @Template()
+     * @Route("/new_popup", name="reference_role_new_popup", methods={"GET", "POST"})
+     * @Template
      * @IsGranted("ROLE_CONTENT_ADMIN")
      *
      * @return array|RedirectResponse
@@ -127,11 +124,9 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
 
     /**
      * @Route("/{id}", name="reference_role_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(ReferenceRole $referenceRole) {
+    public function show(ReferenceRole $referenceRole) : array {
         return [
             'reference_role' => $referenceRole,
         ];
@@ -139,9 +134,9 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
 
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
-     * @Route("/{id}/edit", name="reference_role_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="reference_role_edit", methods={"GET", "POST"})
      *
-     * @Template()
+     * @Template
      *
      * @return array|RedirectResponse
      */
@@ -165,10 +160,8 @@ class ReferenceRoleController extends AbstractController implements PaginatorAwa
     /**
      * @IsGranted("ROLE_CONTENT_ADMIN")
      * @Route("/{id}", name="reference_role_delete", methods={"DELETE"})
-     *
-     * @return RedirectResponse
      */
-    public function delete(Request $request, ReferenceRole $referenceRole) {
+    public function delete(Request $request, ReferenceRole $referenceRole) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $referenceRole->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($referenceRole);

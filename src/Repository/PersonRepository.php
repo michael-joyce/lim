@@ -13,7 +13,6 @@ namespace App\Repository;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,9 +26,6 @@ class PersonRepository extends ServiceEntityRepository {
         parent::__construct($registry, Person::class);
     }
 
-    /**
-     * @return Query
-     */
     public function indexQuery() {
         return $this->createQueryBuilder('person')
             ->orderBy('person.sortableName')
@@ -38,16 +34,24 @@ class PersonRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param string $q
-     *
      * @return Collection|Person[]
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         $qb = $this->createQueryBuilder('person');
         $qb->andWhere('person.fullName LIKE :q');
         $qb->orderBy('person.sortableName', 'ASC');
         $qb->setParameter('q', "%{$q}%");
 
         return $qb->getQuery()->execute();
+    }
+
+    public function searchQuery(string $q) {
+        $qb = $this->createQueryBuilder('person');
+        $qb->addSelect('MATCH (person.fullName, person.biography) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
     }
 }

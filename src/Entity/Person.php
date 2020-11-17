@@ -19,7 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(indexes={
- * @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ *     @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ *     @ORM\Index(name="person_search_idx", columns={"full_name", "biography"}, flags={"fulltext"})
  * })
  */
 class Person extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
@@ -55,9 +56,27 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=1, nullable=false, options={"default"="U"})
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default": "U"})
      */
     private $gender;
+
+    /**
+     * List of titles held by a person and the date range for the title.
+     * [['dates' => '1700-1787', 'title' => 'Laird of Somewhere']]
+     *
+     * @var array
+     * @ORM\Column(type="json")
+     */
+    private $titles;
+
+    /**
+     * List of occupations held by a person and the date range.
+     * [['dates' => '1700-1787', 'title' => 'Gentleman farmer']]
+     *
+     * @var array
+     * @ORM\Column(type="json")
+     */
+    private $occupations;
 
     /**
      * @var string
@@ -67,13 +86,13 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist", "remove"})
      */
     private $birthYear;
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist", "remove"})
      */
     private $deathYear;
 
@@ -95,19 +114,14 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
      */
     private $homes;
 
-    /**
-     * @var Collection|Occupation[]
-     * @ORM\ManyToMany(targetEntity="Occupation", inversedBy="persons")
-     */
-    private $occupations;
-
     public function __construct() {
         parent::__construct();
         $this->contributor_constructor();
         $this->link_constructor();
         $this->reference_constructor();
         $this->homes = new ArrayCollection();
-        $this->occupations = new ArrayCollection();
+        $this->occupations = [];
+        $this->titles = [];
     }
 
     /**
@@ -228,26 +242,29 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
         return $this;
     }
 
-    /**
-     * @return Collection|Occupation[]
-     */
-    public function getOccupations() : Collection {
+    public function addOccupation($name, $date) {
+        $this->occupations[] = ['name' => $name, 'date' => $date];
+        return $this;
+    }
+
+    public function getOccupations() {
         return $this->occupations;
     }
 
-    public function addOccupation(Occupation $occupation) : self {
-        if ( ! $this->occupations->contains($occupation)) {
-            $this->occupations[] = $occupation;
-        }
+    public function setOccupations($occupations) {
+        $this->occupations = $occupations;
+    }
 
+    public function addTitle($name, $date) {
+        $this->titles[] = ['name' => $name, 'date' => $date];
         return $this;
     }
 
-    public function removeOccupation(Occupation $occupation) : self {
-        if ($this->occupations->contains($occupation)) {
-            $this->occupations->removeElement($occupation);
-        }
+    public function getTitles() {
+        return $this->titles;
+    }
 
-        return $this;
+    public function setTitles($titles) {
+        $this->titles = $titles;
     }
 }

@@ -1,0 +1,15 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true
+
+    test.App\Repository\CircaDateRepository: '@App\Repository\CircaDateRepository'
+    test.App\Repository\LinkRepository: '@App\Repository\LinkRepository'
+    test.App\Repository\LocationRepository: '@App\Repository\LocationRepository'
+    test.App\Repository\PersonRepository: '@App\Repository\PersonRepository'
+    test.App\Repository\ReferenceRepository: '@App\Repository\ReferenceRepository'
+    test.App\Repository\ReferenceRoleRepository: '@App\Repository\ReferenceRoleRepository'
+    test.App\Service\ContributionManager: '@App\Service\ContributionManager'
+    test.App\Service\LinkManager: '@App\Service\LinkManager'
