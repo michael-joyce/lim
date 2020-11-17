@@ -27,9 +27,6 @@ class LinkRepository extends ServiceEntityRepository {
         parent::__construct($registry, Link::class);
     }
 
-    /**
-     * @return Query
-     */
     public function indexQuery() {
         return $this->createQueryBuilder('link')
             ->orderBy('link.id')
@@ -38,11 +35,9 @@ class LinkRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param string $q
-     *
      * @return Collection|Link[]
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         $qb = $this->createQueryBuilder('link');
         $qb->andWhere('link.url LIKE :q');
         $qb->orderBy('link.url', 'ASC');
@@ -51,12 +46,7 @@ class LinkRepository extends ServiceEntityRepository {
         return $qb->getQuery()->execute();
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) {
         $qb = $this->createQueryBuilder('link');
         $qb->addSelect('MATCH (link.url, link.text) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

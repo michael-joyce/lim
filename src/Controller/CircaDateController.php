@@ -28,7 +28,7 @@ class CircaDateController extends AbstractController implements PaginatorAwareIn
     /**
      * @Route("/", name="circa_date_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function index(Request $request, CircaDateRepository $circaDateRepository) : array {
         $query = $circaDateRepository->indexQuery();
@@ -42,11 +42,9 @@ class CircaDateController extends AbstractController implements PaginatorAwareIn
 
     /**
      * @Route("/{id}", name="circa_date_show", methods={"GET"})
-     * @Template()
-     *
-     * @return array
+     * @Template
      */
-    public function show(CircaDate $circaDate) {
+    public function show(CircaDate $circaDate) : array {
         return [
             'circa_date' => $circaDate,
         ];

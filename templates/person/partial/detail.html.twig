@@ -70,22 +70,6 @@
             </td>
         </tr>
         <tr>
-            <th>Occupation</th>
-            <td>
-                {% if person.occupations|length > 0 %}
-                    <ul>
-                        {% for occupation in person.occupations %}
-                            <li>
-                                <a href='{{ path("occupation_show", {"id":occupation.id }) }}'>
-                                    {{ occupation }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
             <th>Links</th>
             <td>
                 {% for link in person.links %}

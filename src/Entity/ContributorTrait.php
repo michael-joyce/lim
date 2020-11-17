@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 
 trait ContributorTrait {
     /**
@@ -42,8 +42,9 @@ trait ContributorTrait {
         return $this;
     }
 
-    public function addContribution(DateTime $date, $name) {
+    public function addContribution(DateTimeImmutable $date, $name) {
         $str = $date->format('Y-m-d');
+
         foreach ($this->contributions as $contribution) {
             if ($contribution['date'] === $str && $contribution['name'] === $name) {
                 return $this;

@@ -27,10 +27,7 @@ class PersonRepository extends ServiceEntityRepository {
         parent::__construct($registry, Person::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery()  {
         return $this->createQueryBuilder('person')
             ->orderBy('person.sortableName')
             ->getQuery()
@@ -38,11 +35,9 @@ class PersonRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param string $q
-     *
      * @return Collection|Person[]
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         $qb = $this->createQueryBuilder('person');
         $qb->andWhere('person.fullName LIKE :q');
         $qb->orderBy('person.sortableName', 'ASC');
@@ -51,12 +46,7 @@ class PersonRepository extends ServiceEntityRepository {
         return $qb->getQuery()->execute();
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) {
         $qb = $this->createQueryBuilder('person');
         $qb->addSelect('MATCH (person.fullName, person.biography) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

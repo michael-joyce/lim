@@ -21,6 +21,7 @@ class LinkableTraitTest extends ServiceBaseCase {
             ['http://example.com/other', null],
         ];
         $links = [];
+
         foreach ($data as $d) {
             $l = new Link();
             $l->setUrl($d[0]);

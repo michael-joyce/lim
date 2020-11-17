@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 
 interface ContributorInterface {
     public function getContributions() : ?array;
 
     public function setContributions(array $contributions);
 
-    public function addContribution(DateTime $date, $name);
+    public function addContribution(DateTimeImmutable $date, $name);
 }

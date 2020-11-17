@@ -28,10 +28,7 @@ class CircaDateRepository extends ServiceEntityRepository {
         parent::__construct($registry, CircaDate::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery()  {
         return $this->createQueryBuilder('circaDate')
             ->orderBy('circaDate.id')
             ->getQuery()
@@ -39,11 +36,9 @@ class CircaDateRepository extends ServiceEntityRepository {
     }
 
     /**
-     * @param string $q
-     *
      * @return CircaDate[]|Collection
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('circaDate');
         $qb->andWhere('circaDate.column LIKE :q');

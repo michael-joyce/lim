@@ -32,6 +32,7 @@ trait LinkableTrait {
         if ( ! $links) {
             return $this;
         }
+
         foreach ($links as $link) {
             $this->addLink($link);
         }

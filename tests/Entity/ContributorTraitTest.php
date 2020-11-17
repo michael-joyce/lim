@@ -10,37 +10,37 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use Nines\UtilBundle\Tests\ServiceBaseCase;
 
 class ContributorTraitTest extends ServiceBaseCase {
     public function testAddContribution() : void {
         $s = new ContributorStandIn();
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
         $this->assertCount(1, $s->getContributions());
     }
 
     public function testAddMultipleContributions() : void {
         $s = new ContributorStandIn();
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
-        $s->addContribution(new DateTime('2020-01-02'), 'AB');
-        $s->addContribution(new DateTime('2020-01-03'), 'BC');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-02'), 'AB');
+        $s->addContribution(new DateTimeImmutable('2020-01-03'), 'BC');
         $this->assertCount(3, $s->getContributions());
     }
 
     public function testAddDuplicateContributions() : void {
         $s = new ContributorStandIn();
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
-        $s->addContribution(new DateTime('2020-01-01'), 'BC');
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'BC');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
         $this->assertCount(2, $s->getContributions());
     }
 
     public function testGetContributionsSortedByDate() : void {
         $s = new ContributorStandIn();
-        $s->addContribution(new DateTime('2020-01-02'), 'AB');
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
-        $s->addContribution(new DateTime('2020-01-03'), 'BC');
+        $s->addContribution(new DateTimeImmutable('2020-01-02'), 'AB');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-03'), 'BC');
         $this->assertCount(3, $s->getContributions());
         $contributions = $s->getContributions();
         $this->assertSame('2020-01-03', $contributions[0]['date']);
@@ -50,9 +50,9 @@ class ContributorTraitTest extends ServiceBaseCase {
 
     public function testGetContributionsSortedByName() : void {
         $s = new ContributorStandIn();
-        $s->addContribution(new DateTime('2020-01-01'), 'AB');
-        $s->addContribution(new DateTime('2020-01-01'), 'MJ');
-        $s->addContribution(new DateTime('2020-01-01'), 'BC');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'AB');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'MJ');
+        $s->addContribution(new DateTimeImmutable('2020-01-01'), 'BC');
         $this->assertCount(3, $s->getContributions());
         $contributions = $s->getContributions();
         $this->assertSame('AB', $contributions[0]['name']);

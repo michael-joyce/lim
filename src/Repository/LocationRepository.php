@@ -27,19 +27,14 @@ class LocationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Location::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery()  {
         return $this->createQueryBuilder('location')->orderBy('location.id')->getQuery();
     }
 
     /**
-     * @param string $q
-     *
      * @return Collection|Location[]
      */
-    public function typeaheadQuery($q) {
+    public function typeaheadQuery(string $q) {
         $qb = $this->createQueryBuilder('location');
         $qb->andWhere('location.name LIKE :q');
         $qb->orderBy('location.name', 'ASC');
@@ -48,12 +43,7 @@ class LocationRepository extends ServiceEntityRepository {
         return $qb->getQuery()->execute();
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q) {
         $qb = $this->createQueryBuilder('location');
         $qb->addSelect('MATCH (location.name) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

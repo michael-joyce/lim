@@ -19,8 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
  * @ORM\Table(indexes={
- *  @ORM\Index(columns={"url","text"}, flags={"fulltext"}),
- *  @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"url", "text"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"entity"})
  * })
  */
 class Link extends AbstractEntity {

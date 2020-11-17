@@ -19,8 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=ReferenceRepository::class)
  * @ORM\Table(indexes={
- *  @ORM\Index(columns={"citation", "description"}, flags={"fulltext"}),
- *  @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"citation", "description"}, flags={"fulltext"}),
+ *     @ORM\Index(columns={"entity"})
  * })
  */
 class Reference extends AbstractEntity {

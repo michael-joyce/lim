@@ -19,8 +19,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
  * @ORM\Table(indexes={
- *   @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
- *   @ORM\Index(name="person_search_idx", columns={"full_name", "biography"}, flags={"fulltext"})
+ *     @ORM\Index(name="person_sort_idx", columns={"sortable_name"}),
+ *     @ORM\Index(name="person_search_idx", columns={"full_name", "biography"}, flags={"fulltext"})
  * })
  */
 class Person extends AbstractEntity implements ContributorInterface, LinkableInterface, ReferenceableInterface {
@@ -56,7 +56,7 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=1, nullable=false, options={"default"="U"})
+     * @ORM\Column(type="string", length=1, nullable=false, options={"default": "U"})
      */
     private $gender;
 
@@ -68,13 +68,13 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist", "remove"})
      */
     private $birthYear;
 
     /**
      * @var CircaDate
-     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="CircaDate", cascade={"persist", "remove"})
      */
     private $deathYear;
 
@@ -96,19 +96,12 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
      */
     private $homes;
 
-    /**
-     * @var Collection|Occupation[]
-     * @ORM\ManyToMany(targetEntity="Occupation", inversedBy="persons")
-     */
-    private $occupations;
-
     public function __construct() {
         parent::__construct();
         $this->contributor_constructor();
         $this->link_constructor();
         $this->reference_constructor();
         $this->homes = new ArrayCollection();
-        $this->occupations = new ArrayCollection();
     }
 
     /**
@@ -229,26 +222,4 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
         return $this;
     }
 
-    /**
-     * @return Collection|Occupation[]
-     */
-    public function getOccupations() : Collection {
-        return $this->occupations;
-    }
-
-    public function addOccupation(Occupation $occupation) : self {
-        if ( ! $this->occupations->contains($occupation)) {
-            $this->occupations[] = $occupation;
-        }
-
-        return $this;
-    }
-
-    public function removeOccupation(Occupation $occupation) : self {
-        if ($this->occupations->contains($occupation)) {
-            $this->occupations->removeElement($occupation);
-        }
-
-        return $this;
-    }
 }

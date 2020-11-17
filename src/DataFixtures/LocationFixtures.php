@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Location;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -30,7 +30,7 @@ class LocationFixtures extends Fixture {
             $fixture->setFcode('Fcode ' . $i);
             $fixture->setCountry('A' . chr(70 + $i));
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
-            $fixture->addContribution(new DateTime('2020-01-01'), 'Test User');
+            $fixture->addContribution(new DateTimeImmutable('2020-01-01'), 'Test User');
             $em->persist($fixture);
             $this->setReference('location.' . $i, $fixture);
         }

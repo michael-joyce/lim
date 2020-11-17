@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Person;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +27,7 @@ class PersonFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setSortableName('SortableName ' . $i);
             $fixture->setGender((0 === $i % 2) ? Person::FEMALE : Person::MALE);
             $fixture->setBiography("<p>This is paragraph {$i}</p>");
-            $fixture->addContribution(new DateTime('2020-01-01'), 'Test User');
+            $fixture->addContribution(new DateTimeImmutable('2020-01-01'), 'Test User');
             $fixture->setBirthyear($this->getReference('circadate.' . $i));
             $fixture->setDeathyear($this->getReference('circadate.' . $i));
             $fixture->setBirthplace($this->getReference('location.' . $i));
@@ -45,7 +45,6 @@ class PersonFixtures extends Fixture implements DependentFixtureInterface {
         return [
             CircaDateFixtures::class,
             LocationFixtures::class,
-            OccupationFixtures::class,
         ];
     }
 }

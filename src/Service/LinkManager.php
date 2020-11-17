@@ -58,10 +58,8 @@ class LinkManager implements EventSubscriber {
 
     /**
      * Build the commenting service.
-     *
-     * @param array $routing
      */
-    public function __construct($routing) {
+    public function __construct(array $routing) {
         $this->routing = $routing;
     }
 
@@ -95,12 +93,8 @@ class LinkManager implements EventSubscriber {
 
     /**
      * Check if an entity is configured to accept links.
-     *
-     * @param AbstractEntity $entity
-     *
-     * @return bool
      */
-    public function acceptsLinks($entity) {
+    public function acceptsLinks(AbstractEntity $entity) : bool {
         return $entity instanceof LinkableInterface;
     }
 
@@ -110,7 +104,7 @@ class LinkManager implements EventSubscriber {
      * @return mixed
      */
     public function findEntity(Link $link) {
-        [$class, $id] = explode(':', $link->getEntity());
+        list($class, $id) = explode(':', $link->getEntity());
         if ($this->em->getMetadataFactory()->isTransient($class)) {
             return;
         }
@@ -163,7 +157,7 @@ class LinkManager implements EventSubscriber {
     }
 
     public function linkToEntity($link) {
-        [$class, $id] = explode(':', $link->getEntity());
+        list($class, $id) = explode(':', $link->getEntity());
 
         return $this->router->generate($this->routing[$class], ['id' => $id]);
     }
@@ -188,6 +182,7 @@ class LinkManager implements EventSubscriber {
         if ( ! $entity instanceof LinkableInterface) {
             return;
         }
+
         foreach ($entity->getLinks() as $link) {
             $this->em->remove($link);
         }

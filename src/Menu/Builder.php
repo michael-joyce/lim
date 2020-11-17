@@ -54,10 +54,8 @@ class Builder implements ContainerAwareInterface {
 
     /**
      * Build a menu for navigation.
-     *
-     * @return ItemInterface
      */
-    public function mainMenu(array $options) {
+    public function mainMenu(array $options) : ItemInterface {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',
@@ -72,9 +70,6 @@ class Builder implements ContainerAwareInterface {
         $browse->setLinkAttribute('data-toggle', 'dropdown');
         $browse->setChildrenAttribute('class', 'dropdown-menu');
 
-        $browse->addChild('Occupations', [
-            'route' => 'occupation_index',
-        ]);
         $browse->addChild('People', [
             'route' => 'person_index',
         ]);
@@ -120,10 +115,8 @@ class Builder implements ContainerAwareInterface {
 
     /**
      * Build a menu for navigation.
-     *
-     * @return ItemInterface
      */
-    public function footerMenu(array $options) {
+    public function footerMenu(array $options) : ItemInterface {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',

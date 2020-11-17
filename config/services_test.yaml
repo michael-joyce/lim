@@ -8,7 +8,6 @@ services:
     test.App\Repository\CircaDateRepository: '@App\Repository\CircaDateRepository'
     test.App\Repository\LinkRepository: '@App\Repository\LinkRepository'
     test.App\Repository\LocationRepository: '@App\Repository\LocationRepository'
-    test.App\Repository\OccupationRepository: '@App\Repository\OccupationRepository'
     test.App\Repository\PersonRepository: '@App\Repository\PersonRepository'
     test.App\Repository\ReferenceRepository: '@App\Repository\ReferenceRepository'
     test.App\Repository\ReferenceRoleRepository: '@App\Repository\ReferenceRoleRepository'

@@ -26,22 +26,14 @@ class ReferenceRepository extends ServiceEntityRepository {
         parent::__construct($registry, Reference::class);
     }
 
-    /**
-     * @return Query
-     */
-    public function indexQuery() {
+    public function indexQuery()  {
         return $this->createQueryBuilder('reference')
             ->orderBy('reference.id')
             ->getQuery()
         ;
     }
 
-    /**
-     * @param string $q
-     *
-     * @return Query
-     */
-    public function searchQuery($q) {
+    public function searchQuery(string $q)  {
         $qb = $this->createQueryBuilder('reference');
         $qb->addSelect('MATCH (reference.citation, reference.description) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');
