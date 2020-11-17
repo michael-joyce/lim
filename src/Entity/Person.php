@@ -221,5 +221,4 @@ class Person extends AbstractEntity implements ContributorInterface, LinkableInt
 
         return $this;
     }
-
 }

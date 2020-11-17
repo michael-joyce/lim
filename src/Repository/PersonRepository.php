@@ -13,7 +13,6 @@ namespace App\Repository;
 use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,7 +26,7 @@ class PersonRepository extends ServiceEntityRepository {
         parent::__construct($registry, Person::class);
     }
 
-    public function indexQuery()  {
+    public function indexQuery() {
         return $this->createQueryBuilder('person')
             ->orderBy('person.sortableName')
             ->getQuery()

@@ -13,7 +13,6 @@ namespace App\Repository;
 use App\Entity\CircaDate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
 
@@ -28,7 +27,7 @@ class CircaDateRepository extends ServiceEntityRepository {
         parent::__construct($registry, CircaDate::class);
     }
 
-    public function indexQuery()  {
+    public function indexQuery() {
         return $this->createQueryBuilder('circaDate')
             ->orderBy('circaDate.id')
             ->getQuery()

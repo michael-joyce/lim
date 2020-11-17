@@ -13,7 +13,6 @@ namespace App\Repository;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -27,7 +26,7 @@ class LocationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Location::class);
     }
 
-    public function indexQuery()  {
+    public function indexQuery() {
         return $this->createQueryBuilder('location')->orderBy('location.id')->getQuery();
     }
 
