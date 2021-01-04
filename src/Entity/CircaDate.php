@@ -22,8 +22,8 @@ define('RANGE_RE', '/^(?:' . CIRCA_RE . ')?-(?:' . CIRCA_RE . ')?$/');
  * Date.
  *
  * @ORM\Table(indexes={
- *   @ORM\Index(columns={"start"}),
- *   @ORM\Index(columns={"end"})
+ *     @ORM\Index(columns={"start"}),
+ *     @ORM\Index(columns={"end"})
  * })
  * @ORM\Entity(repositoryClass="App\Repository\CircaDateRepository")
  */
@@ -90,10 +90,10 @@ class CircaDate extends AbstractEntity {
         if (null === $value) {
             return;
         }
-        if ($value instanceof CircaDate) {
+        if ($value instanceof self) {
             return $value;
         }
-        $date = new CircaDate();
+        $date = new self();
         $date->setValue($value);
 
         return $date;
@@ -105,9 +105,9 @@ class CircaDate extends AbstractEntity {
 
     public function setValue($value) {
         $this->value = $value;
-        $value = strtolower(preg_replace('/\s*/', '', (string) $value));
+        $value = mb_strtolower(preg_replace('/\s*/', '', (string) $value));
         $matches = [];
-        if (false === strpos($value, '-')) {
+        if (false === mb_strpos($value, '-')) {
             // not a range
             if (preg_match(YEAR_RE, $value, $matches)) {
                 $this->startCirca = ('c' === $matches[1]);
