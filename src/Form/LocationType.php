@@ -51,6 +51,7 @@ class LocationType extends AbstractType {
             'required' => false,
             'attr' => [
                 'help_block' => '',
+                'step' => 'any',
             ],
         ]);
         $builder->add('longitude', NumberType::class, [
@@ -61,6 +62,7 @@ class LocationType extends AbstractType {
             'required' => false,
             'attr' => [
                 'help_block' => '',
+                'step' => 'any',
             ],
         ]);
         $builder->add('fclass', TextType::class, [
